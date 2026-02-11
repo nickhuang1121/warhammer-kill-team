@@ -5,6 +5,7 @@ const tabs = document.getElementById("tabs");
 const itemList = document.getElementById("itemList");
 const detailTitle = document.getElementById("detailTitle");
 const detailView = document.getElementById("detailView");
+const detailPanel = document.getElementById("detailPanel");
 const resetPloyChecksBtn = document.getElementById("resetPloyChecksBtn");
 const unitFilterBtn = document.getElementById("unitFilterBtn");
 const resetWoundsBtn = document.getElementById("resetWoundsBtn");
@@ -411,6 +412,13 @@ function renderAll() {
   renderDetail();
 }
 
+function scrollToDetailOnMobile() {
+  if (!detailPanel) return;
+  if (window.matchMedia("(max-width: 980px)").matches) {
+    detailPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 teamSelect.addEventListener("change", () => {
   currentTeamId = teamSelect.value;
   currentItemId = "";
@@ -451,6 +459,7 @@ itemList.addEventListener("click", (e) => {
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
   renderAll();
+  scrollToDetailOnMobile();
 });
 
 itemList.addEventListener("change", (e) => {

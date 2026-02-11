@@ -12,6 +12,7 @@
         margin: 0;
         font-family: "Noto Sans TC", "Avenir Next", sans-serif;
         color: var(--text);
+        touch-action: manipulation;
         background:
           radial-gradient(900px 420px at 0% -25%, #22395f 0%, transparent 60%),
           radial-gradient(700px 320px at 100% 0%, #2a3559 0%, transparent 60%),
