@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KT 隊伍資料閱讀器（離線測試）</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="top">
+      <h1>KT 隊伍資料閱讀器（測試版）</h1>
+      <div class="hint">目前載入 3 隊：偵查狼殺戮小隊 / 瘟疫戰士 / 風暴飛鷹。可離線瀏覽（本地 JSON）。</div>
+    </header>
+
+    <section class="toolbar">
+      <label>
+        切換隊伍
+        <select id="teamSelect"></select>
+      </label>
+      <label>
+        字級
+        <input id="fontSize" type="range" min="14" max="24" value="17" />
+      </label>
+      <div class="hint" id="teamMeta"></div>
+    </section>
+
+    <main class="content">
+      <section class="panel">
+        <div class="panel-title">隊伍內容切換</div>
+        <div class="panel-body">
+          <div class="tabs" id="tabs">
+            <button class="tab active" data-key="units">單位</button>
+            <button class="tab" data-key="strategic_ploys">戰略計謀</button>
+            <button class="tab" data-key="tactical_ploys">交戰計謀</button>
+            <button class="tab" data-key="equipment">陣營裝備</button>
+          </div>
+          <div class="item-list" id="itemList"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title" id="detailTitle">內容</div>
+        <div class="panel-body" id="detailView"></div>
+      </section>
+    </main>
+  </div>
+    <div class="floating-actions" aria-label="快速操作">
+      <button id="unitFilterBtn" class="unit-filter-fab" type="button">
+        單位：顯示全部
+      </button>
+      <button id="resetWoundsBtn" class="reset-wounds-fab" type="button">
+        重置耐傷
+      </button>
+      <button id="resetPloyChecksBtn" class="reset-ploy-fab" type="button">
+        重置計謀/裝備勾選
+      </button>
+    </div>
+
+  <script id="fallbackData" type="application/json">
+      {"version":"fallback","teams":[]}
+    </script>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
