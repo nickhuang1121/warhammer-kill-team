@@ -48,6 +48,9 @@
     </main>
   </div>
   <div class="floating-actions" aria-label="快速操作">
+    <button id="openScoreBtn" class="score-fab" type="button">
+      計分
+    </button>
     <button id="unitFilterBtn" class="unit-filter-fab" type="button">
       單位：顯示全部
     </button>
@@ -57,6 +60,102 @@
     <button id="resetPloyChecksBtn" class="reset-ploy-fab" type="button">
       重置計謀/裝備勾選
     </button>
+  </div>
+  <div id="scoreOverlay" class="score-overlay is-hidden" aria-hidden="true">
+    <div class="score-panel" role="dialog" aria-modal="true" aria-label="計分頁面">
+      <div class="score-head">
+        <h3>計分面板</h3>
+        <button id="closeScoreBtn" class="score-close" type="button">關閉</button>
+      </div>
+      <div class="score-body">
+        <div class="score-team">
+          <label>玩家 A 名稱
+            <input id="scoreP1Name" type="text" placeholder="玩家 A" />
+          </label>
+          <div class="score-round-table">
+            <div class="score-round-head">
+              <span>回合</span><span>主</span><span>副</span><span>擊殺</span><span>小計</span>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R1</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r1_main" data-delta="-1">-</button><strong data-score-bind="p1_r1_main">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r1_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r1_secondary" data-delta="-1">-</button><strong data-score-bind="p1_r1_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r1_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r1_kill" data-delta="-1">-</button><strong data-score-bind="p1_r1_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r1_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p1_r1">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R2</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r2_main" data-delta="-1">-</button><strong data-score-bind="p1_r2_main">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r2_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r2_secondary" data-delta="-1">-</button><strong data-score-bind="p1_r2_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r2_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r2_kill" data-delta="-1">-</button><strong data-score-bind="p1_r2_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r2_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p1_r2">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R3</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r3_main" data-delta="-1">-</button><strong data-score-bind="p1_r3_main">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r3_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r3_secondary" data-delta="-1">-</button><strong data-score-bind="p1_r3_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r3_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r3_kill" data-delta="-1">-</button><strong data-score-bind="p1_r3_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r3_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p1_r3">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R4</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r4_main" data-delta="-1">-</button><strong data-score-bind="p1_r4_main">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r4_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r4_secondary" data-delta="-1">-</button><strong data-score-bind="p1_r4_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r4_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p1_r4_kill" data-delta="-1">-</button><strong data-score-bind="p1_r4_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p1_r4_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p1_r4">0</strong>
+            </div>
+            <div class="score-total-row">總VP <strong data-score-bind-grand-total="p1">0</strong></div>
+          </div>
+        </div>
+
+        <div class="score-team">
+          <label>玩家 B 名稱
+            <input id="scoreP2Name" type="text" placeholder="玩家 B" />
+          </label>
+          <div class="score-round-table">
+            <div class="score-round-head">
+              <span>回合</span><span>主</span><span>副</span><span>擊殺</span><span>小計</span>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R1</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r1_main" data-delta="-1">-</button><strong data-score-bind="p2_r1_main">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r1_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r1_secondary" data-delta="-1">-</button><strong data-score-bind="p2_r1_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r1_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r1_kill" data-delta="-1">-</button><strong data-score-bind="p2_r1_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r1_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p2_r1">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R2</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r2_main" data-delta="-1">-</button><strong data-score-bind="p2_r2_main">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r2_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r2_secondary" data-delta="-1">-</button><strong data-score-bind="p2_r2_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r2_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r2_kill" data-delta="-1">-</button><strong data-score-bind="p2_r2_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r2_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p2_r2">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R3</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r3_main" data-delta="-1">-</button><strong data-score-bind="p2_r3_main">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r3_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r3_secondary" data-delta="-1">-</button><strong data-score-bind="p2_r3_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r3_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r3_kill" data-delta="-1">-</button><strong data-score-bind="p2_r3_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r3_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p2_r3">0</strong>
+            </div>
+            <div class="score-round-row">
+              <span class="round-tag">R4</span>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r4_main" data-delta="-1">-</button><strong data-score-bind="p2_r4_main">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r4_main" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r4_secondary" data-delta="-1">-</button><strong data-score-bind="p2_r4_secondary">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r4_secondary" data-delta="1">+</button></div>
+              <div class="score-mini-stepper"><button type="button" data-score-action="delta" data-score-field="p2_r4_kill" data-delta="-1">-</button><strong data-score-bind="p2_r4_kill">0</strong><button type="button" data-score-action="delta" data-score-field="p2_r4_kill" data-delta="1">+</button></div>
+              <strong data-score-bind-round-total="p2_r4">0</strong>
+            </div>
+            <div class="score-total-row">總VP <strong data-score-bind-grand-total="p2">0</strong></div>
+          </div>
+        </div>
+
+        <label>備註
+          <textarea id="scoreNotes" rows="3" placeholder="記錄重點事件"></textarea>
+        </label>
+      </div>
+      <div class="score-foot">
+        <button id="scoreResetBtn" type="button" class="score-reset-btn">重置計分</button>
+      </div>
+    </div>
   </div>
 
   <script id="fallbackData" type="application/json">

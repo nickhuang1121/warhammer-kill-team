@@ -9,6 +9,13 @@ const detailPanel = document.getElementById("detailPanel");
 const resetPloyChecksBtn = document.getElementById("resetPloyChecksBtn");
 const unitFilterBtn = document.getElementById("unitFilterBtn");
 const resetWoundsBtn = document.getElementById("resetWoundsBtn");
+const openScoreBtn = document.getElementById("openScoreBtn");
+const scoreOverlay = document.getElementById("scoreOverlay");
+const closeScoreBtn = document.getElementById("closeScoreBtn");
+const scoreResetBtn = document.getElementById("scoreResetBtn");
+const scoreP1Name = document.getElementById("scoreP1Name");
+const scoreP2Name = document.getElementById("scoreP2Name");
+const scoreNotes = document.getElementById("scoreNotes");
 
 let doc = { teams: [] };
 let currentTeamId = "";
@@ -21,11 +28,41 @@ let weaponRules = { rules: {} };
 let selectedWeaponRuleKey = "";
 let selectedWeaponRuleLabel = "";
 let unitCheckedOnly = false;
+let scoreState = {
+  p1_name: "",
+  p1_r1_main: 0,
+  p1_r1_secondary: 0,
+  p1_r1_kill: 0,
+  p1_r2_main: 0,
+  p1_r2_secondary: 0,
+  p1_r2_kill: 0,
+  p1_r3_main: 0,
+  p1_r3_secondary: 0,
+  p1_r3_kill: 0,
+  p1_r4_main: 0,
+  p1_r4_secondary: 0,
+  p1_r4_kill: 0,
+  p2_name: "",
+  p2_r1_main: 0,
+  p2_r1_secondary: 0,
+  p2_r1_kill: 0,
+  p2_r2_main: 0,
+  p2_r2_secondary: 0,
+  p2_r2_kill: 0,
+  p2_r3_main: 0,
+  p2_r3_secondary: 0,
+  p2_r3_kill: 0,
+  p2_r4_main: 0,
+  p2_r4_secondary: 0,
+  p2_r4_kill: 0,
+  notes: ""
+};
 
 const WEAPON_CHECKS_KEY = "kt_weapon_checks_v1";
 const LIST_CHECKS_KEY = "kt_list_checks_v1";
 const UNIT_FILTER_KEY = "kt_units_checked_only_v1";
 const UNIT_WOUNDS_KEY = "kt_unit_wounds_v1";
+const SCORE_STATE_KEY = "kt_score_state_v1";
 
 function loadWeaponChecks() {
   try {
@@ -73,6 +110,82 @@ function loadUnitWounds() {
 
 function saveUnitWounds() {
   localStorage.setItem(UNIT_WOUNDS_KEY, JSON.stringify(unitWounds));
+}
+
+function loadScoreState() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(SCORE_STATE_KEY) || "{}");
+    scoreState = {
+      ...scoreState,
+      ...parsed
+    };
+    // 相容舊版：若存在舊欄位，轉成 R1 主/副/擊殺。
+    if (Number.isFinite(Number(parsed.p1_primary_vp))) scoreState.p1_r1_main = Number(parsed.p1_primary_vp);
+    if (Number.isFinite(Number(parsed.p1_secondary_vp))) scoreState.p1_r1_secondary = Number(parsed.p1_secondary_vp);
+    if (Number.isFinite(Number(parsed.p1_kill_vp))) scoreState.p1_r1_kill = Number(parsed.p1_kill_vp);
+    if (Number.isFinite(Number(parsed.p2_primary_vp))) scoreState.p2_r1_main = Number(parsed.p2_primary_vp);
+    if (Number.isFinite(Number(parsed.p2_secondary_vp))) scoreState.p2_r1_secondary = Number(parsed.p2_secondary_vp);
+    if (Number.isFinite(Number(parsed.p2_kill_vp))) scoreState.p2_r1_kill = Number(parsed.p2_kill_vp);
+    if (Number.isFinite(Number(parsed.p1_r1_vp))) scoreState.p1_r1_main = Number(parsed.p1_r1_vp);
+    if (Number.isFinite(Number(parsed.p2_r1_vp))) scoreState.p2_r1_main = Number(parsed.p2_r1_vp);
+  } catch { }
+}
+
+function saveScoreState() {
+  localStorage.setItem(SCORE_STATE_KEY, JSON.stringify(scoreState));
+}
+
+function clampScoreValue(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.floor(n));
+}
+
+function getRoundTotal(prefix, round) {
+  return (
+    clampScoreValue(scoreState[`${prefix}_${round}_main`]) +
+    clampScoreValue(scoreState[`${prefix}_${round}_secondary`]) +
+    clampScoreValue(scoreState[`${prefix}_${round}_kill`])
+  );
+}
+
+function getGrandTotalVp(prefix) {
+  return (
+    getRoundTotal(prefix, "r1") +
+    getRoundTotal(prefix, "r2") +
+    getRoundTotal(prefix, "r3") +
+    getRoundTotal(prefix, "r4")
+  );
+}
+
+function renderScoreUI() {
+  scoreOverlay.querySelectorAll("[data-score-bind]").forEach((el) => {
+    const key = el.getAttribute("data-score-bind");
+    el.textContent = String(clampScoreValue(scoreState[key]));
+  });
+  scoreOverlay.querySelectorAll("[data-score-bind-round-total]").forEach((el) => {
+    const token = el.getAttribute("data-score-bind-round-total"); // p1_r1
+    const [prefix, round] = token.split("_");
+    el.textContent = String(getRoundTotal(prefix, round));
+  });
+  scoreOverlay.querySelectorAll("[data-score-bind-grand-total]").forEach((el) => {
+    const prefix = el.getAttribute("data-score-bind-grand-total");
+    el.textContent = String(getGrandTotalVp(prefix));
+  });
+  scoreP1Name.value = scoreState.p1_name || "";
+  scoreP2Name.value = scoreState.p2_name || "";
+  scoreNotes.value = scoreState.notes || "";
+}
+
+function openScoreOverlay() {
+  scoreOverlay.classList.remove("is-hidden");
+  scoreOverlay.setAttribute("aria-hidden", "false");
+  renderScoreUI();
+}
+
+function closeScoreOverlay() {
+  scoreOverlay.classList.add("is-hidden");
+  scoreOverlay.setAttribute("aria-hidden", "true");
 }
 
 function weaponCheckKey(teamId, unitId, weaponName, index) {
@@ -510,6 +623,10 @@ detailView.addEventListener("click", (e) => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
+  if (!scoreOverlay.classList.contains("is-hidden")) {
+    closeScoreOverlay();
+    return;
+  }
   if (!selectedWeaponRuleKey) return;
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
@@ -541,9 +658,83 @@ unitFilterBtn.addEventListener("click", () => {
   renderAll();
 });
 
+openScoreBtn.addEventListener("click", () => {
+  openScoreOverlay();
+});
+
+closeScoreBtn.addEventListener("click", () => {
+  closeScoreOverlay();
+});
+
+scoreOverlay.addEventListener("click", (e) => {
+  if (e.target === scoreOverlay) closeScoreOverlay();
+});
+
+scoreOverlay.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-score-action='delta']");
+  if (!btn) return;
+  const field = btn.dataset.scoreField;
+  const delta = Number(btn.dataset.delta || 0);
+  if (!(field in scoreState)) return;
+  const current = clampScoreValue(scoreState[field]);
+  scoreState[field] = Math.max(0, current + delta);
+  saveScoreState();
+  renderScoreUI();
+});
+
+scoreP1Name.addEventListener("input", () => {
+  scoreState.p1_name = scoreP1Name.value;
+  saveScoreState();
+});
+
+scoreP2Name.addEventListener("input", () => {
+  scoreState.p2_name = scoreP2Name.value;
+  saveScoreState();
+});
+
+scoreNotes.addEventListener("input", () => {
+  scoreState.notes = scoreNotes.value;
+  saveScoreState();
+});
+
+scoreResetBtn.addEventListener("click", () => {
+  scoreState = {
+    p1_name: scoreState.p1_name || "",
+    p1_r1_main: 0,
+    p1_r1_secondary: 0,
+    p1_r1_kill: 0,
+    p1_r2_main: 0,
+    p1_r2_secondary: 0,
+    p1_r2_kill: 0,
+    p1_r3_main: 0,
+    p1_r3_secondary: 0,
+    p1_r3_kill: 0,
+    p1_r4_main: 0,
+    p1_r4_secondary: 0,
+    p1_r4_kill: 0,
+    p2_name: scoreState.p2_name || "",
+    p2_r1_main: 0,
+    p2_r1_secondary: 0,
+    p2_r1_kill: 0,
+    p2_r2_main: 0,
+    p2_r2_secondary: 0,
+    p2_r2_kill: 0,
+    p2_r3_main: 0,
+    p2_r3_secondary: 0,
+    p2_r3_kill: 0,
+    p2_r4_main: 0,
+    p2_r4_secondary: 0,
+    p2_r4_kill: 0,
+    notes: ""
+  };
+  saveScoreState();
+  renderScoreUI();
+});
+
 loadWeaponChecks();
 loadListChecks();
 loadUnitFilter();
 loadUnitWounds();
+loadScoreState();
 updateUnitFilterBtnLabel();
 loadDoc();
