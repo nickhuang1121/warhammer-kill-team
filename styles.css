@@ -95,8 +95,7 @@ body::after {
 }
 
 .top {
-  position: sticky;
-  top: 0;
+  position: static;
   z-index: 40;
   border-bottom: 1px solid var(--line);
   padding: 12px 14px;
@@ -122,8 +121,7 @@ body::after {
 }
 
 .toolbar {
-  position: sticky;
-  top: 62px;
+  position: static;
   z-index: 35;
   border-bottom: 1px solid var(--line-soft);
   padding: 10px 14px;
@@ -794,7 +792,6 @@ a:hover {
 
 @media (max-width: 980px) {
   .toolbar {
-    top: 62px;
     grid-template-columns: 1fr;
   }
 
@@ -884,5 +881,68 @@ a:hover {
   .score-bonus-group button {
     padding: 5px 8px;
     font-size: 13px;
+  }
+
+  .weapon-table thead {
+    display: none;
+  }
+
+  .weapon-table {
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+
+  .weapon-table tbody tr {
+    display: grid;
+    grid-template-columns: 42px 1fr 50px 50px 50px;
+    grid-template-areas:
+      "check name atk hit dmg"
+      "rules rules rules rules rules";
+    align-items: center;
+    border: 1px solid rgba(125, 109, 219, 0.35);
+    border-radius: 10px;
+    background: rgba(12, 9, 39, 0.55);
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .weapon-table tbody td {
+    border: 0;
+    padding: 6px 6px;
+  }
+
+  .weapon-table tbody td:nth-child(1) {
+    grid-area: check;
+    text-align: center;
+  }
+
+  .weapon-table tbody td:nth-child(2) {
+    grid-area: name;
+    font-weight: 600;
+  }
+
+  .weapon-table tbody td:nth-child(3) {
+    grid-area: atk;
+    text-align: center;
+  }
+
+  .weapon-table tbody td:nth-child(4) {
+    grid-area: hit;
+    text-align: center;
+  }
+
+  .weapon-table tbody td:nth-child(5) {
+    grid-area: dmg;
+    text-align: center;
+  }
+
+  .weapon-table tbody td:nth-child(6) {
+    grid-area: rules;
+    border-top: 1px dashed rgba(125, 109, 219, 0.28);
+    padding-top: 7px;
+  }
+
+  .weapon-table tbody td:nth-child(6)::before {
+    content: "";
   }
 }

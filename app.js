@@ -6,6 +6,7 @@ const itemList = document.getElementById("itemList");
 const detailTitle = document.getElementById("detailTitle");
 const detailView = document.getElementById("detailView");
 const detailPanel = document.getElementById("detailPanel");
+const ruleModalRoot = document.getElementById("ruleModalRoot");
 const resetPloyChecksBtn = document.getElementById("resetPloyChecksBtn");
 const unitFilterBtn = document.getElementById("unitFilterBtn");
 const resetWoundsBtn = document.getElementById("resetWoundsBtn");
@@ -317,6 +318,63 @@ function renderWeaponRulesCell(rawRules) {
   }).join("")}</div>`;
 }
 
+function escapeRegExp(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getLinkableRuleKeys() {
+  return Object.keys(weaponRules.rules || {})
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length);
+}
+
+function shouldSkipRuleLink(text, key, index) {
+  if (key !== "范围") return false;
+  const prev2 = text.slice(Math.max(0, index - 2), index);
+  return prev2 === "控制";
+}
+
+function renderTextWithRuleLinks(rawText) {
+  const text = String(rawText ?? "");
+  if (!text) return "";
+  const keys = getLinkableRuleKeys();
+  if (!keys.length) return escapeHtml(text);
+  const regex = new RegExp(`(${keys.map(escapeRegExp).join("|")})`, "g");
+  let out = "";
+  let last = 0;
+  let match = regex.exec(text);
+  while (match) {
+    const idx = match.index;
+    const key = match[0];
+    out += escapeHtml(text.slice(last, idx));
+    if (!weaponRules.rules?.[key] || shouldSkipRuleLink(text, key, idx)) {
+      out += escapeHtml(key);
+    } else {
+      const active = key === selectedWeaponRuleKey ? "active" : "";
+      out += `<button class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(key)}">${escapeHtml(key)}</button>`;
+    }
+    last = idx + key.length;
+    match = regex.exec(text);
+  }
+  out += escapeHtml(text.slice(last));
+  return out;
+}
+
+function renderRuleModal() {
+  if (!selectedWeaponRuleKey || !weaponRules.rules?.[selectedWeaponRuleKey]) return "";
+  return `<div class="rule-modal-overlay" data-close-rule-modal="1">
+            <div class="rule-modal" role="dialog" aria-modal="true" aria-label="武器規則說明">
+              <div class="rule-modal-head">
+                <h3>武器規則說明：${escapeHtml(selectedWeaponRuleLabel || selectedWeaponRuleKey)}</h3>
+                <button class="rule-modal-close" type="button" data-close-rule-modal="1">關閉</button>
+              </div>
+              <div class="rule-modal-body">
+                <div class="text">${escapeHtml(weaponRules.rules[selectedWeaponRuleKey])}</div>
+              </div>
+            </div>
+          </div>`;
+}
+
 async function loadDoc() {
   const docCandidates = [
     "data/kt_teams_test.json",
@@ -441,12 +499,19 @@ function renderDetail() {
   if (!item) {
     detailTitle.textContent = "內容";
     detailView.innerHTML = `<div class="meta">沒有可顯示內容</div>`;
+    ruleModalRoot.innerHTML = "";
     return;
   }
 
   detailTitle.textContent = `${team.name} / ${tabLabel(currentTab)} / ${item.name}`;
 
   const mainText = item.summary || item.effect || "";
+  const ruleModalHtml = renderRuleModal();
+  ruleModalRoot.innerHTML = ruleModalHtml;
+  const shouldLinkRulesInMainText = ["faction_rules", "strategic_ploys", "tactical_ploys"].includes(currentTab);
+  const mainTextHtml = shouldLinkRulesInMainText
+    ? renderTextWithRuleLinks(mainText)
+    : escapeHtml(mainText || "（尚未填寫）");
 
   if (currentTab === "units") {
     const st = item.stats || {};
@@ -465,7 +530,7 @@ function renderDetail() {
             <div class="card">
               <h3>武器</h3>
               ${weapons.length
-        ? `<table>
+        ? `<table class="weapon-table">
                       <thead>
                         <tr><th>勾選</th><th>名稱</th><th>攻擊</th><th>命中</th><th>傷害</th><th>規則</th></tr>
                       </thead>
@@ -498,7 +563,7 @@ function renderDetail() {
             <div class="card">
               <h3>能力（技能）</h3>
               ${abilities.length
-        ? `<div class="text">${abilities.join("\n\n")}</div>`
+        ? `<div class="text">${abilities.map((ab) => renderTextWithRuleLinks(ab)).join("\n\n")}</div>`
         : `<div class="meta">（此單位尚未填能力資料）</div>`
       }
             </div>
@@ -506,20 +571,6 @@ function renderDetail() {
               <h3>隊伍備註</h3>
               <div class="text">${team.notes || "（無）"}</div>
             </div>
-            ${selectedWeaponRuleKey && weaponRules.rules?.[selectedWeaponRuleKey]
-        ? `<div class="rule-modal-overlay" data-close-rule-modal="1">
-                    <div class="rule-modal" role="dialog" aria-modal="true" aria-label="武器規則說明">
-                      <div class="rule-modal-head">
-                        <h3>武器規則說明：${escapeHtml(selectedWeaponRuleLabel || selectedWeaponRuleKey)}</h3>
-                        <button class="rule-modal-close" type="button" data-close-rule-modal="1">關閉</button>
-                      </div>
-                      <div class="rule-modal-body">
-                        <div class="text">${escapeHtml(weaponRules.rules[selectedWeaponRuleKey])}</div>
-                      </div>
-                    </div>
-                  </div>`
-        : ""
-      }
           `;
     return;
   }
@@ -527,7 +578,7 @@ function renderDetail() {
   detailView.innerHTML = `
           <div class="card">
             <h3>${item.name}</h3>
-            <div class="text">${mainText || "（尚未填寫）"}</div>
+            <div class="text">${mainTextHtml}</div>
           </div>
           <div class="card">
             <h3>隊伍備註</h3>
@@ -637,6 +688,22 @@ detailView.addEventListener("click", (e) => {
     return;
   }
 
+  const overlay = e.target.closest(".rule-modal-overlay");
+  const modal = e.target.closest(".rule-modal");
+  if (overlay && !modal) {
+    selectedWeaponRuleKey = "";
+    selectedWeaponRuleLabel = "";
+    renderDetail();
+  }
+});
+
+ruleModalRoot.addEventListener("click", (e) => {
+  if (e.target.closest(".rule-modal-close")) {
+    selectedWeaponRuleKey = "";
+    selectedWeaponRuleLabel = "";
+    renderDetail();
+    return;
+  }
   const overlay = e.target.closest(".rule-modal-overlay");
   const modal = e.target.closest(".rule-modal");
   if (overlay && !modal) {
