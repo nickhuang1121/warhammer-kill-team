@@ -6,7 +6,12 @@ const itemList = document.getElementById("itemList");
 const detailTitle = document.getElementById("detailTitle");
 const detailView = document.getElementById("detailView");
 const detailPanel = document.getElementById("detailPanel");
-const ruleModalRoot = document.getElementById("ruleModalRoot");
+let ruleModalRoot = document.getElementById("ruleModalRoot");
+if (!ruleModalRoot) {
+  ruleModalRoot = document.createElement("div");
+  ruleModalRoot.id = "ruleModalRoot";
+  document.body.appendChild(ruleModalRoot);
+}
 const resetPloyChecksBtn = document.getElementById("resetPloyChecksBtn");
 const unitFilterBtn = document.getElementById("unitFilterBtn");
 const resetWoundsBtn = document.getElementById("resetWoundsBtn");
@@ -14,9 +19,21 @@ const openScoreBtn = document.getElementById("openScoreBtn");
 const scoreOverlay = document.getElementById("scoreOverlay");
 const closeScoreBtn = document.getElementById("closeScoreBtn");
 const scoreResetBtn = document.getElementById("scoreResetBtn");
+const scoreExportBtn = document.getElementById("scoreExportBtn");
+const scoreResetLogBtn = document.getElementById("scoreResetLogBtn");
+const scoreResetAllBtn = document.getElementById("scoreResetAllBtn");
+const scoreTimerDisplay = document.getElementById("scoreTimerDisplay");
+const scoreTimerStartBtn = document.getElementById("scoreTimerStartBtn");
+const scoreTimerPauseBtn = document.getElementById("scoreTimerPauseBtn");
+const scoreTimerEndBtn = document.getElementById("scoreTimerEndBtn");
 const scoreP1Name = document.getElementById("scoreP1Name");
 const scoreP2Name = document.getElementById("scoreP2Name");
 const scoreNotes = document.getElementById("scoreNotes");
+const scorePlayLogList = document.getElementById("scorePlayLogList");
+
+if (tabs && tabs.parentElement !== document.body) {
+  document.body.appendChild(tabs);
+}
 
 let doc = { teams: [] };
 let currentTeamId = "";
@@ -29,6 +46,11 @@ let weaponRules = { rules: {} };
 let selectedWeaponRuleKey = "";
 let selectedWeaponRuleLabel = "";
 let unitCheckedOnly = false;
+let timerRunning = false;
+let timerHasStarted = false;
+let timerElapsedMs = 0;
+let timerStartAt = 0;
+let timerIntervalId = null;
 let scoreState = {
   p1_name: "",
   p1_bonus: "main",
@@ -58,6 +80,7 @@ let scoreState = {
   p2_r4_main: 0,
   p2_r4_secondary: 0,
   p2_r4_kill: 0,
+  play_log: [],
   notes: ""
 };
 
@@ -133,6 +156,7 @@ function loadScoreState() {
     if (Number.isFinite(Number(parsed.p2_r1_vp))) scoreState.p2_r1_main = Number(parsed.p2_r1_vp);
     if (!["main", "secondary", "kill"].includes(scoreState.p1_bonus)) scoreState.p1_bonus = "main";
     if (!["main", "secondary", "kill"].includes(scoreState.p2_bonus)) scoreState.p2_bonus = "main";
+    if (!Array.isArray(scoreState.play_log)) scoreState.play_log = [];
   } catch { }
 }
 
@@ -177,6 +201,310 @@ function getGrandTotalVp(prefix) {
   return Math.round(weightedTotal);
 }
 
+function getBonusLabel(key) {
+  if (key === "main") return "主";
+  if (key === "secondary") return "副";
+  if (key === "kill") return "擊殺";
+  return "主";
+}
+
+function getCurrentActorName() {
+  const n1 = (scoreState.p1_name || "").trim();
+  const n2 = (scoreState.p2_name || "").trim();
+  if (n1) return n1;
+  if (n2) return n2;
+  return "玩家名稱";
+}
+
+function getPlayerName(prefix) {
+  if (prefix === "p1") return (scoreState.p1_name || "").trim() || "玩家A";
+  if (prefix === "p2") return (scoreState.p2_name || "").trim() || "玩家B";
+  return getCurrentActorName();
+}
+
+function getVpCategoryLabel(category) {
+  if (category === "main") return "主";
+  if (category === "secondary") return "副";
+  if (category === "kill") return "擊殺";
+  return category;
+}
+
+function addPlayLogEvent(actionText, actorName = "") {
+  if (!timerHasStarted) return;
+  const at = formatTimer(getCurrentElapsedMs());
+  const actor = actorName || getCurrentActorName();
+  const line = `${actor} ${at}-${actionText}`;
+  scoreState.play_log = [...(scoreState.play_log || []), line].slice(-300);
+  saveScoreState();
+  renderPlayLogUI();
+}
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function formatNowForFilename() {
+  const d = new Date();
+  return `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}-${pad2(d.getHours())}${pad2(d.getMinutes())}${pad2(d.getSeconds())}`;
+}
+
+const REQUESTED_EXPORT_SCALE = 1;
+const EXPORT_TEXT_MULTIPLIER = 3;
+const EXPORT_BASE_W = 2480;
+const EXPORT_MAX_CANVAS = 8192;
+
+function getExportScale() {
+  return Math.min(REQUESTED_EXPORT_SCALE, EXPORT_MAX_CANVAS / EXPORT_BASE_W);
+}
+
+function exportUnit(value, scale) {
+  return Math.max(1, Math.floor(value * scale));
+}
+
+function exportTextUnit(value, scale) {
+  return Math.max(1, Math.floor(value * scale * EXPORT_TEXT_MULTIPLIER));
+}
+
+function exportFont(sizePx, weight = "400", scale = 1) {
+  return `${weight} ${exportTextUnit(sizePx, scale)}px 'Noto Sans TC', 'PingFang TC', sans-serif`;
+}
+
+function wrapTextLines(ctx, text, maxWidth) {
+  const source = String(text || "").replace(/\r/g, "");
+  const paragraphs = source.split("\n");
+  const lines = [];
+  for (const p of paragraphs) {
+    if (!p) {
+      lines.push("");
+      continue;
+    }
+    let line = "";
+    for (const ch of p) {
+      const test = line + ch;
+      if (ctx.measureText(test).width <= maxWidth) {
+        line = test;
+      } else {
+        if (line) lines.push(line);
+        line = ch;
+      }
+    }
+    if (line) lines.push(line);
+  }
+  return lines;
+}
+
+function getPlayerTableHeight(scale) {
+  const rowHeight = exportTextUnit(96, scale);
+  const titleH = exportTextUnit(74, scale);
+  const headH = exportTextUnit(80, scale);
+  const totalH = exportTextUnit(86, scale);
+  const bonusH = exportTextUnit(70, scale);
+  return titleH + headH + rowHeight * 4 + totalH + bonusH;
+}
+
+function drawPlayerScoreTable(ctx, prefix, displayName, startX, startY, tableWidth, scale) {
+  const rounds = ["r1", "r2", "r3", "r4"];
+  const rowHeight = exportTextUnit(96, scale);
+  const titleH = exportTextUnit(74, scale);
+  const headH = exportTextUnit(80, scale);
+  const totalH = exportTextUnit(86, scale);
+  const bonusH = exportTextUnit(70, scale);
+  const cols = [
+    { key: "round", label: "回合", w: exportUnit(120, scale) },
+    { key: "main", label: "主", w: exportUnit(120, scale) },
+    { key: "secondary", label: "副", w: exportUnit(120, scale) },
+    { key: "kill", label: "擊殺", w: exportUnit(120, scale) },
+    { key: "subtotal", label: "小計", w: exportUnit(120, scale) }
+  ];
+  const fixedW = cols.reduce((s, c) => s + c.w, 0);
+  const widthScale = tableWidth / fixedW;
+  for (const c of cols) c.rw = Math.floor(c.w * widthScale);
+  cols[cols.length - 1].rw += tableWidth - cols.reduce((s, c) => s + c.rw, 0);
+
+  let y = startY;
+  ctx.fillStyle = "#000";
+  ctx.font = exportFont(48, "700", scale);
+  ctx.fillText(displayName || (prefix === "p1" ? "玩家 A" : "玩家 B"), startX, y + exportTextUnit(54, scale));
+  y += titleH;
+
+  const drawRowGrid = (yy, height) => {
+    let x = startX;
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = exportUnit(4, scale);
+    for (const c of cols) {
+      ctx.strokeRect(x, yy, c.rw, height);
+      x += c.rw;
+    }
+  };
+
+  drawRowGrid(y, headH);
+  ctx.font = exportFont(40, "600", scale);
+  ctx.fillStyle = "#111";
+  {
+    let x = startX;
+    for (const c of cols) {
+      ctx.fillText(c.label, x + exportUnit(20, scale), y + exportTextUnit(54, scale));
+      x += c.rw;
+    }
+  }
+  y += headH;
+
+  ctx.font = exportFont(44, "500", scale);
+  for (const round of rounds) {
+    drawRowGrid(y, rowHeight);
+    const values = {
+      round: round.toUpperCase(),
+      main: clampScoreValue(scoreState[`${prefix}_${round}_main`]),
+      secondary: clampScoreValue(scoreState[`${prefix}_${round}_secondary`]),
+      kill: clampScoreValue(scoreState[`${prefix}_${round}_kill`]),
+      subtotal: getRoundTotal(prefix, round)
+    };
+    let x = startX;
+    for (const c of cols) {
+      ctx.fillText(String(values[c.key]), x + exportUnit(20, scale), y + exportTextUnit(62, scale));
+      x += c.rw;
+    }
+    y += rowHeight;
+  }
+
+  ctx.fillStyle = "#f3f3f3";
+  ctx.fillRect(startX, y, tableWidth, totalH);
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = exportUnit(4, scale);
+  ctx.strokeRect(startX, y, tableWidth, totalH);
+  ctx.fillStyle = "#000";
+  ctx.font = exportFont(50, "700", scale);
+  ctx.fillText(`總VP：${getGrandTotalVp(prefix)}`, startX + exportUnit(20, scale), y + exportTextUnit(60, scale));
+  y += totalH;
+
+  ctx.strokeRect(startX, y, tableWidth, bonusH);
+  ctx.font = exportFont(38, "500", scale);
+  const bonusKey = scoreState[`${prefix}_bonus`] || "main";
+  ctx.fillText(`加權 x1.5：${getBonusLabel(bonusKey)}`, startX + exportUnit(20, scale), y + exportTextUnit(48, scale));
+  y += bonusH;
+
+  return y;
+}
+
+function exportScoreA4Image() {
+  const scale = getExportScale();
+  const W = exportUnit(EXPORT_BASE_W, scale);
+  const margin = exportUnit(96, scale);
+  const topSafePad = exportTextUnit(90, scale);
+  const bottomSafePad = exportTextUnit(160, scale);
+  const contentW = W - margin * 2;
+  let y = margin + topSafePad;
+
+  // 先計算動態高度（備註長度會影響輸出高度）
+  y += exportUnit(146, scale); // 標題與時間區
+  y += getPlayerTableHeight(scale); // 玩家A表
+  y += exportUnit(58, scale); // 表間距
+  y += getPlayerTableHeight(scale); // 玩家B表
+  y += exportUnit(68, scale); // 到備註前間距
+
+  const notesTitleY = y + exportTextUnit(42, scale);
+  const notesTop = notesTitleY + exportTextUnit(26, scale);
+  const lineHeight = exportTextUnit(52, scale);
+  const measureCanvas = document.createElement("canvas");
+  measureCanvas.width = W;
+  measureCanvas.height = 10;
+  const measureCtx = measureCanvas.getContext("2d");
+  if (!measureCtx) return;
+  measureCtx.font = exportFont(40, "400", scale);
+  const noteLines = wrapTextLines(measureCtx, scoreState.notes || "", contentW - exportUnit(24, scale));
+  const notesBoxH = Math.max(
+    exportTextUnit(320, scale),
+    exportTextUnit(110, scale) + noteLines.length * lineHeight
+  );
+  const logs = Array.isArray(scoreState.play_log) ? scoreState.play_log : [];
+  const playLogTitleGap = exportTextUnit(70, scale);
+  const playLogTitleY = notesTop + notesBoxH + playLogTitleGap;
+  const playLogTop = playLogTitleY + exportTextUnit(26, scale);
+  const playLogLines = wrapTextLines(measureCtx, logs.join("\n"), contentW - exportUnit(24, scale));
+  const playLogBoxH = Math.max(
+    exportTextUnit(260, scale),
+    exportTextUnit(110, scale) + playLogLines.length * lineHeight
+  );
+  const H = playLogTop + playLogBoxH + margin + bottomSafePad;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, W, H);
+
+  y = margin + topSafePad;
+
+  ctx.fillStyle = "#000";
+  ctx.font = exportFont(78, "700", scale);
+  ctx.fillText("KT 計分表", margin, y);
+
+  ctx.font = exportFont(40, "400", scale);
+  const now = new Date();
+  ctx.fillText(
+    `匯出時間：${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`,
+    margin,
+    y + exportTextUnit(66, scale)
+  );
+  y += exportTextUnit(146, scale);
+
+  y = drawPlayerScoreTable(ctx, "p1", scoreState.p1_name || "玩家 A", margin, y, contentW, scale);
+  y += exportTextUnit(58, scale);
+  y = drawPlayerScoreTable(ctx, "p2", scoreState.p2_name || "玩家 B", margin, y, contentW, scale);
+  y += exportTextUnit(68, scale);
+
+  const notesTitleYDraw = y + exportTextUnit(42, scale);
+  ctx.font = exportFont(48, "700", scale);
+  ctx.fillStyle = "#000";
+  ctx.fillText("備註", margin, notesTitleYDraw);
+
+  const notesTopDraw = notesTitleYDraw + exportTextUnit(26, scale);
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = exportUnit(4, scale);
+  ctx.strokeRect(margin, notesTopDraw, contentW, notesBoxH);
+
+  ctx.font = exportFont(40, "400", scale);
+  let textY = notesTopDraw + exportTextUnit(64, scale);
+  for (const line of noteLines) {
+    if (textY > notesTopDraw + notesBoxH - exportTextUnit(36, scale)) break;
+    ctx.fillText(line, margin + exportUnit(16, scale), textY);
+    textY += exportTextUnit(52, scale);
+  }
+
+  const playLogTitleYDraw = notesTopDraw + notesBoxH + exportTextUnit(70, scale);
+  ctx.font = exportFont(48, "700", scale);
+  ctx.fillStyle = "#000";
+  ctx.fillText("遊玩過程", margin, playLogTitleYDraw);
+
+  const playLogTopDraw = playLogTitleYDraw + exportTextUnit(26, scale);
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = exportUnit(4, scale);
+  ctx.strokeRect(margin, playLogTopDraw, contentW, playLogBoxH);
+
+  ctx.font = exportFont(40, "400", scale);
+  let logY = playLogTopDraw + exportTextUnit(64, scale);
+  for (const line of playLogLines) {
+    if (logY > playLogTopDraw + playLogBoxH - exportTextUnit(36, scale)) break;
+    ctx.fillText(line, margin + exportUnit(16, scale), logY);
+    logY += exportTextUnit(52, scale);
+  }
+
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `kt-score-a4-${formatNowForFilename()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, "image/png");
+}
+
 function renderScoreUI() {
   scoreOverlay.querySelectorAll("[data-score-bind]").forEach((el) => {
     const key = el.getAttribute("data-score-bind");
@@ -199,6 +527,20 @@ function renderScoreUI() {
   scoreP1Name.value = scoreState.p1_name || "";
   scoreP2Name.value = scoreState.p2_name || "";
   scoreNotes.value = scoreState.notes || "";
+  renderPlayLogUI();
+  renderTimerUI();
+}
+
+function renderPlayLogUI() {
+  if (!scorePlayLogList) return;
+  const logs = Array.isArray(scoreState.play_log) ? scoreState.play_log : [];
+  if (!logs.length) {
+    scorePlayLogList.innerHTML = `<div class="empty">尚無記錄</div>`;
+    return;
+  }
+  scorePlayLogList.innerHTML = logs
+    .map((line) => `<div class="score-playlog-item">${escapeHtml(line)}</div>`)
+    .join("");
 }
 
 function openScoreOverlay() {
@@ -210,6 +552,80 @@ function openScoreOverlay() {
 function closeScoreOverlay() {
   scoreOverlay.classList.add("is-hidden");
   scoreOverlay.setAttribute("aria-hidden", "true");
+}
+
+function formatTimer(ms) {
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  if (h > 0) return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+  return `${pad2(m)}:${pad2(s)}`;
+}
+
+function getCurrentElapsedMs() {
+  if (!timerRunning) return timerElapsedMs;
+  return Math.max(0, Date.now() - timerStartAt);
+}
+
+function updateTimerTick() {
+  if (!scoreTimerDisplay) return;
+  scoreTimerDisplay.textContent = formatTimer(getCurrentElapsedMs());
+}
+
+function setTimerInterval(enabled) {
+  if (!enabled) {
+    if (timerIntervalId) clearInterval(timerIntervalId);
+    timerIntervalId = null;
+    return;
+  }
+  if (timerIntervalId) return;
+  timerIntervalId = setInterval(updateTimerTick, 500);
+}
+
+function renderTimerUI() {
+  if (!scoreTimerDisplay || !scoreTimerStartBtn || !scoreTimerPauseBtn || !scoreTimerEndBtn) return;
+  updateTimerTick();
+  scoreTimerStartBtn.classList.toggle("is-hidden", timerHasStarted);
+  scoreTimerPauseBtn.classList.toggle("is-hidden", !timerHasStarted);
+  scoreTimerEndBtn.classList.toggle("is-hidden", !timerHasStarted);
+  scoreTimerPauseBtn.textContent = timerRunning ? "暫停計時" : "繼續計時";
+}
+
+function startTimer() {
+  if (!timerHasStarted) {
+    timerHasStarted = true;
+    timerElapsedMs = 0;
+    scoreState.play_log = [];
+    saveScoreState();
+  }
+  timerRunning = true;
+  timerStartAt = Date.now() - timerElapsedMs;
+  setTimerInterval(true);
+  renderTimerUI();
+}
+
+function togglePauseTimer() {
+  if (!timerHasStarted) return;
+  if (timerRunning) {
+    timerElapsedMs = getCurrentElapsedMs();
+    timerRunning = false;
+    setTimerInterval(false);
+  } else {
+    timerRunning = true;
+    timerStartAt = Date.now() - timerElapsedMs;
+    setTimerInterval(true);
+  }
+  renderTimerUI();
+}
+
+function endTimer() {
+  timerRunning = false;
+  timerHasStarted = false;
+  timerElapsedMs = 0;
+  timerStartAt = 0;
+  setTimerInterval(false);
+  renderTimerUI();
 }
 
 function weaponCheckKey(teamId, unitId, weaponName, index) {
@@ -314,7 +730,7 @@ function renderWeaponRulesCell(rawRules) {
     const key = getRuleKey(token);
     if (!key || !weaponRules.rules?.[key]) return `<span>${escapeHtml(token)}</span>`;
     const active = key === selectedWeaponRuleKey ? "active" : "";
-    return `<button class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(token)}">${escapeHtml(token)}</button>`;
+    return `<button type="button" class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(token)}">${escapeHtml(token)}</button>`;
   }).join("")}</div>`;
 }
 
@@ -351,13 +767,23 @@ function renderTextWithRuleLinks(rawText) {
       out += escapeHtml(key);
     } else {
       const active = key === selectedWeaponRuleKey ? "active" : "";
-      out += `<button class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(key)}">${escapeHtml(key)}</button>`;
+      out += `<button type="button" class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(key)}">${escapeHtml(key)}</button>`;
     }
     last = idx + key.length;
     match = regex.exec(text);
   }
   out += escapeHtml(text.slice(last));
   return out;
+}
+
+function renderAbilityText(rawText) {
+  const text = String(rawText ?? "");
+  if (!text) return "";
+  const colonIndex = text.search(/[：:]/);
+  if (colonIndex < 0) return renderTextWithRuleLinks(text);
+  const namePart = text.slice(0, colonIndex + 1);
+  const descPart = text.slice(colonIndex + 1);
+  return `<span class="ability-name">${escapeHtml(namePart)}</span>${renderTextWithRuleLinks(descPart)}`;
 }
 
 function renderRuleModal() {
@@ -499,7 +925,7 @@ function renderDetail() {
   if (!item) {
     detailTitle.textContent = "內容";
     detailView.innerHTML = `<div class="meta">沒有可顯示內容</div>`;
-    ruleModalRoot.innerHTML = "";
+    if (ruleModalRoot) ruleModalRoot.innerHTML = "";
     return;
   }
 
@@ -507,7 +933,7 @@ function renderDetail() {
 
   const mainText = item.summary || item.effect || "";
   const ruleModalHtml = renderRuleModal();
-  ruleModalRoot.innerHTML = ruleModalHtml;
+  if (ruleModalRoot) ruleModalRoot.innerHTML = ruleModalHtml;
   const shouldLinkRulesInMainText = ["faction_rules", "strategic_ploys", "tactical_ploys"].includes(currentTab);
   const mainTextHtml = shouldLinkRulesInMainText
     ? renderTextWithRuleLinks(mainText)
@@ -563,7 +989,7 @@ function renderDetail() {
             <div class="card">
               <h3>能力（技能）</h3>
               ${abilities.length
-        ? `<div class="text">${abilities.map((ab) => renderTextWithRuleLinks(ab)).join("\n\n")}</div>`
+        ? `<div class="text ability-text">${abilities.map((ab) => renderAbilityText(ab)).join("\n\n")}</div>`
         : `<div class="meta">（此單位尚未填能力資料）</div>`
       }
             </div>
@@ -610,9 +1036,13 @@ function scrollToDetailOnMobile() {
 
 teamSelect.addEventListener("change", () => {
   currentTeamId = teamSelect.value;
+  currentTab = "units";
   currentItemId = "";
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
+  [...tabs.querySelectorAll(".tab")].forEach((x) =>
+    x.classList.toggle("active", x.dataset.key === "units")
+  );
   renderAll();
 });
 
@@ -634,10 +1064,15 @@ itemList.addEventListener("click", (e) => {
     const unitId = woundBtn.dataset.unitId;
     const delta = Number(woundBtn.dataset.delta || 0);
     const max = Number(woundBtn.dataset.max || 0);
+    const unit = (team.units || []).find((u) => u.id === unitId);
     const key = unitWoundsKey(team.id, unitId);
     const current = Number.isFinite(Number(unitWounds[key])) ? Number(unitWounds[key]) : max;
     unitWounds[key] = Math.max(0, Math.min(max, current + delta));
     saveUnitWounds();
+    if (delta !== 0) {
+      const action = delta > 0 ? `加${Math.abs(delta)}耐傷` : `扣${Math.abs(delta)}耐傷`;
+      addPlayLogEvent(`${unit?.name || unitId} ${action}`);
+    }
     renderItemList();
     return;
   }
@@ -662,6 +1097,18 @@ itemList.addEventListener("change", (e) => {
     const row = input.closest(".item-row");
     const btn = row?.querySelector(".item-btn");
     if (btn) btn.classList.toggle("used", input.checked);
+  }
+
+  if (input.checked) {
+    const row = input.closest(".item-row");
+    const itemName = row?.querySelector(".item-btn")?.textContent?.trim() || "";
+    if (currentTab === "strategic_ploys") {
+      addPlayLogEvent(`勾選戰略計謀-${itemName}`);
+    } else if (currentTab === "tactical_ploys") {
+      addPlayLogEvent(`勾選交戰計謀-${itemName}`);
+    } else if (currentTab === "equipment") {
+      addPlayLogEvent(`勾選陣營裝備-${itemName}`);
+    }
   }
 });
 
@@ -697,21 +1144,23 @@ detailView.addEventListener("click", (e) => {
   }
 });
 
-ruleModalRoot.addEventListener("click", (e) => {
-  if (e.target.closest(".rule-modal-close")) {
-    selectedWeaponRuleKey = "";
-    selectedWeaponRuleLabel = "";
-    renderDetail();
-    return;
-  }
-  const overlay = e.target.closest(".rule-modal-overlay");
-  const modal = e.target.closest(".rule-modal");
-  if (overlay && !modal) {
-    selectedWeaponRuleKey = "";
-    selectedWeaponRuleLabel = "";
-    renderDetail();
-  }
-});
+if (ruleModalRoot) {
+  ruleModalRoot.addEventListener("click", (e) => {
+    if (e.target.closest(".rule-modal-close")) {
+      selectedWeaponRuleKey = "";
+      selectedWeaponRuleLabel = "";
+      renderDetail();
+      return;
+    }
+    const overlay = e.target.closest(".rule-modal-overlay");
+    const modal = e.target.closest(".rule-modal");
+    if (overlay && !modal) {
+      selectedWeaponRuleKey = "";
+      selectedWeaponRuleLabel = "";
+      renderDetail();
+    }
+  });
+}
 
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
@@ -770,6 +1219,14 @@ scoreOverlay.addEventListener("click", (e) => {
   if (!(field in scoreState)) return;
   const current = clampScoreValue(scoreState[field]);
   scoreState[field] = Math.max(0, current + delta);
+  if (delta !== 0) {
+    const match = String(field).match(/^(p[12])_(r[1-4])_(main|secondary|kill)$/);
+    if (match) {
+      const [, prefix, round, category] = match;
+      const sign = delta > 0 ? "+" : "-";
+      addPlayLogEvent(`調整VP-${round.toUpperCase()}${getVpCategoryLabel(category)} ${sign}${Math.abs(delta)}`, getPlayerName(prefix));
+    }
+  }
   saveScoreState();
   renderScoreUI();
 });
@@ -831,11 +1288,51 @@ scoreResetBtn.addEventListener("click", () => {
     p2_r4_main: 0,
     p2_r4_secondary: 0,
     p2_r4_kill: 0,
+    play_log: [],
     notes: ""
   };
   saveScoreState();
   renderScoreUI();
 });
+
+if (scoreExportBtn) {
+  scoreExportBtn.addEventListener("click", () => {
+    exportScoreA4Image();
+  });
+}
+
+if (scoreResetLogBtn) {
+  scoreResetLogBtn.addEventListener("click", () => {
+    scoreState.play_log = [];
+    saveScoreState();
+    renderPlayLogUI();
+  });
+}
+
+if (scoreResetAllBtn) {
+  scoreResetAllBtn.addEventListener("click", () => {
+    localStorage.clear();
+    location.reload();
+  });
+}
+
+if (scoreTimerStartBtn) {
+  scoreTimerStartBtn.addEventListener("click", () => {
+    startTimer();
+  });
+}
+
+if (scoreTimerPauseBtn) {
+  scoreTimerPauseBtn.addEventListener("click", () => {
+    togglePauseTimer();
+  });
+}
+
+if (scoreTimerEndBtn) {
+  scoreTimerEndBtn.addEventListener("click", () => {
+    endTimer();
+  });
+}
 
 loadWeaponChecks();
 loadListChecks();
