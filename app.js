@@ -7,6 +7,11 @@ const itemList = document.getElementById("itemList");
 const detailTitle = document.getElementById("detailTitle");
 const detailView = document.getElementById("detailView");
 const detailPanel = document.getElementById("detailPanel");
+const openSelectionRulesBtn = document.getElementById("openSelectionRulesBtn");
+const selectionRulesOverlay = document.getElementById("selectionRulesOverlay");
+const closeSelectionRulesBtn = document.getElementById("closeSelectionRulesBtn");
+const selectionRulesTitle = document.getElementById("selectionRulesTitle");
+const selectionRulesContent = document.getElementById("selectionRulesContent");
 let ruleModalRoot = document.getElementById("ruleModalRoot");
 if (!ruleModalRoot) {
   ruleModalRoot = document.createElement("div");
@@ -57,6 +62,7 @@ let timerHasStarted = false;
 let timerElapsedMs = 0;
 let timerStartAt = 0;
 let timerIntervalId = null;
+let selectionRulesLastFocus = null;
 let scoreState = {
   p1_name: "",
   p1_bonus: "main",
@@ -707,6 +713,78 @@ function closeScoreOverlay() {
   scoreOverlay.setAttribute("aria-hidden", "true");
 }
 
+function getSelectionRulesText(team) {
+  if (!team) return "（此隊伍尚無特工選擇規則資料）";
+  const rawRules = team.selection_rules;
+  if (typeof rawRules === "string" && rawRules.trim()) return rawRules.trim();
+  if (Array.isArray(rawRules) && rawRules.length) return rawRules.join("\n");
+
+  const rawText = String(team.raw_text || "");
+  if (!rawText.trim()) return "（此隊伍尚無特工選擇規則資料）";
+  const text = rawText.replace(/\r/g, "").replace(/\f/g, "\n");
+
+  const startMarkers = ["杀戮小队", "殺戮小隊", "» 杀戮小队选择", "» 殺戮小隊選擇"];
+  let start = -1;
+  for (const marker of startMarkers) {
+    const idx = text.indexOf(marker);
+    if (idx >= 0 && (start < 0 || idx < start)) start = idx;
+  }
+  if (start < 0) return "（此隊伍尚無特工選擇規則資料）";
+
+  const endMarkers = ["阵营规则", "陣營規則", "标识/指示物指南", "標識/指示物指南", "战略计谋", "戰略計謀"];
+  let end = text.length;
+  for (const marker of endMarkers) {
+    const idx = text.indexOf(marker, start + 1);
+    if (idx > start && idx < end) end = idx;
+  }
+
+  const block = text
+    .slice(start, end)
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  if (!block) return "（此隊伍尚無特工選擇規則資料）";
+  return block;
+}
+
+function renderSelectionRulesOverlay() {
+  const team = getTeam();
+  if (selectionRulesTitle) selectionRulesTitle.textContent = convertForDisplay(`${team?.name || "隊伍"} 特工選擇規則`);
+  if (selectionRulesContent) selectionRulesContent.textContent = convertForDisplay(getSelectionRulesText(team));
+}
+
+function openSelectionRulesOverlay() {
+  if (!selectionRulesOverlay) return;
+  selectionRulesLastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  renderSelectionRulesOverlay();
+  selectionRulesOverlay.removeAttribute("inert");
+  selectionRulesOverlay.classList.remove("is-hidden");
+  selectionRulesOverlay.setAttribute("aria-hidden", "false");
+}
+
+function closeSelectionRulesOverlay() {
+  if (!selectionRulesOverlay) return;
+  const active = document.activeElement;
+  if (active instanceof HTMLElement && selectionRulesOverlay.contains(active)) {
+    const focusBack = (selectionRulesLastFocus && selectionRulesLastFocus.isConnected)
+      ? selectionRulesLastFocus
+      : openSelectionRulesBtn;
+    if (focusBack instanceof HTMLElement) {
+      try {
+        focusBack.focus({ preventScroll: true });
+      } catch {
+        focusBack.focus();
+      }
+    } else {
+      active.blur();
+    }
+  }
+  selectionRulesOverlay.classList.add("is-hidden");
+  selectionRulesOverlay.setAttribute("aria-hidden", "true");
+  selectionRulesOverlay.setAttribute("inert", "");
+}
+
 function formatTimer(ms) {
   const totalSec = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(totalSec / 3600);
@@ -785,8 +863,18 @@ function weaponCheckKey(teamId, unitId, weaponName, index) {
   return `${teamId}__${unitId}__${weaponName}__${index}`;
 }
 
+function isWeaponChecked(key) {
+  // Default checked: only explicit false means unchecked.
+  return weaponChecks[key] !== false;
+}
+
 function listCheckKey(teamId, tabKey, itemId) {
   return `${teamId}__${tabKey}__${itemId}`;
+}
+
+function isUnitChecked(key) {
+  // Unit default checked: only explicit false means unchecked.
+  return listChecks[key] !== false;
 }
 
 function unitWoundsKey(teamId, unitId) {
@@ -875,7 +963,7 @@ function getRuleKey(token) {
   const keys = [
     "关键穿刺", "穿刺", "精准", "平衡", "爆炸", "残暴", "无休", "毁灭", "重型",
     "过热", "致命", "有限", "重击", "范围", "毫不留情", "撕裂", "集中", "追踪",
-    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "乱射", "隐匿位置"
+    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置"
   ];
   return keys.find((k) => t.startsWith(k)) || "";
 }
@@ -956,8 +1044,20 @@ function renderTextWithRuleLinks(rawText) {
   return out;
 }
 
-function renderAbilityText(rawText) {
-  const text = String(rawText ?? "");
+function normalizeAbilityText(rawAbility) {
+  if (rawAbility == null) return "";
+  if (typeof rawAbility === "string") return rawAbility;
+  if (typeof rawAbility === "object") {
+    const name = String(rawAbility.name || "").trim();
+    const body = String(rawAbility.text || rawAbility.effect || "").trim();
+    if (name && body) return `${name}：${body}`;
+    return body || name;
+  }
+  return String(rawAbility);
+}
+
+function renderAbilityText(rawAbility) {
+  const text = normalizeAbilityText(rawAbility);
   if (!text) return "";
   const colonIndex = text.search(/[：:]/);
   if (colonIndex < 0) return renderTextWithRuleLinks(text);
@@ -1097,7 +1197,7 @@ function renderItemList() {
     if (currentTab === "units" && unitCheckedOnly) {
       visibleItems = items.filter((it) => {
         const key = listCheckKey(team.id, "units", it.id);
-        return !!listChecks[key];
+        return isUnitChecked(key);
       });
     }
 
@@ -1117,10 +1217,12 @@ function renderItemList() {
         const usedClass = isPloyTab && listChecks[key] ? "used" : "";
         const maxWounds = Number(it?.stats?.wounds ?? 0);
         const currentWounds = currentTab === "units" ? getCurrentWounds(team.id, it) : null;
-        return `<div class="item-row">
-                ${isCheckableTab ? `<input type="checkbox" class="list-check" data-key="${key}" ${listChecks[key] ? "checked" : ""} />` : `<span></span>`}
+        const checked = currentTab === "units" ? isUnitChecked(key) : !!listChecks[key];
+        const unitUncheckedClass = currentTab === "units" && !checked ? " is-unchecked-unit" : "";
+        return `<div class="item-row${unitUncheckedClass}">
+                ${isCheckableTab ? `<input type="checkbox" class="list-check" data-key="${key}" ${checked ? "checked" : ""} />` : `<span></span>`}
                 <div class="item-btn-wrap">
-                  <button class="item-btn ${it.id === currentItemId ? "active" : ""} ${usedClass}" data-id="${it.id}">${displayHtml(it.name)}</button>
+                  <button class="item-btn ${it.id === currentItemId ? "active" : ""} ${usedClass}${unitUncheckedClass}" data-id="${it.id}">${displayHtml(it.name)}</button>
                 </div>
                 ${
                   currentTab === "units"
@@ -1172,7 +1274,7 @@ function renderDetail() {
     const weapons = item.weapons || [];
     const abilities = item.abilities || [];
     detailView.innerHTML = `
-            <div class="card">
+            <div class="card unit-card unit-card-stats">
               <h3>${displayHtml(item.name)}</h3>
               <div class="stats">
                 <div class="stat"><div class="k">APL</div><div class="v">${st.apl ?? "-"}</div></div>
@@ -1181,7 +1283,7 @@ function renderDetail() {
                 <div class="stat"><div class="k">耐傷</div><div class="v">${st.wounds ?? "-"}</div></div>
               </div>
             </div>
-            <div class="card">
+            <div class="card unit-card card-weapon">
               <h3>武器</h3>
               ${weapons.length
         ? `<table class="weapon-table">
@@ -1192,20 +1294,22 @@ function renderDetail() {
                         ${weapons
           .map((w, idx) => {
             const key = weaponCheckKey(team.id, item.id, w.name || "-", idx);
-            return `<tr>
+            const checked = isWeaponChecked(key);
+            const rulesHtml = checked ? renderWeaponRulesCell(w.rules) : "";
+            return `<tr class="weapon-row ${checked ? "" : "is-unchecked"}">
                               <td>
                                 <input
                                   type="checkbox"
                                   class="weapon-check"
                                   data-key="${key}"
-                                  ${weaponChecks[key] ? "checked" : ""}
+                                  ${checked ? "checked" : ""}
                                 />
                               </td>
                               <td>${displayHtml(w.name || "-")}</td>
                               <td>${w.atk ?? "-"}</td>
                               <td>${w.hit ?? "-"}</td>
                               <td>${w.dmg ?? "-"}</td>
-                              <td>${renderWeaponRulesCell(w.rules)}</td>
+                              <td>${rulesHtml}</td>
                             </tr>`;
           })
           .join("")}
@@ -1214,14 +1318,14 @@ function renderDetail() {
         : `<div class="meta">（此單位尚未填武器資料）</div>`
       }
             </div>
-            <div class="card">
+            <div class="card unit-card">
               <h3>能力（技能）</h3>
               ${abilities.length
         ? `<div class="text ability-text">${abilities.map((ab) => renderAbilityText(ab)).join("\n\n")}</div>`
         : `<div class="meta">（此單位尚未填能力資料）</div>`
       }
             </div>
-            <div class="card">
+            <div class="card unit-card">
               <h3>關鍵字</h3>
               ${renderUnitKeywords(team, item)}
             </div>
@@ -1269,6 +1373,9 @@ teamSelect.addEventListener("change", () => {
     x.classList.toggle("active", x.dataset.key === "units")
   );
   renderAll();
+  if (selectionRulesOverlay && !selectionRulesOverlay.classList.contains("is-hidden")) {
+    renderSelectionRulesOverlay();
+  }
 });
 
 tabs.addEventListener("click", (e) => {
@@ -1314,8 +1421,25 @@ itemList.addEventListener("click", (e) => {
 itemList.addEventListener("change", (e) => {
   const input = e.target.closest(".list-check");
   if (!input) return;
-  listChecks[input.dataset.key] = input.checked;
+  if (currentTab === "units") {
+    // Persist only explicit unchecked for units.
+    if (input.checked) {
+      delete listChecks[input.dataset.key];
+    } else {
+      listChecks[input.dataset.key] = false;
+    }
+  } else {
+    listChecks[input.dataset.key] = input.checked;
+  }
   saveListChecks();
+
+  if (currentTab === "units") {
+    const row = input.closest(".item-row");
+    const btn = row?.querySelector(".item-btn");
+    if (row) row.classList.toggle("is-unchecked-unit", !input.checked);
+    if (btn) btn.classList.toggle("is-unchecked-unit", !input.checked);
+    if (unitCheckedOnly) renderItemList();
+  }
 
   // 即時同步計謀的半透明狀態，不用等下一次重繪。
   if (currentTab === "strategic_ploys" || currentTab === "tactical_ploys") {
@@ -1340,8 +1464,16 @@ itemList.addEventListener("change", (e) => {
 detailView.addEventListener("change", (e) => {
   const input = e.target.closest(".weapon-check");
   if (!input) return;
-  weaponChecks[input.dataset.key] = input.checked;
+  // Persist only explicit unchecked; checked is the default state.
+  if (input.checked) {
+    delete weaponChecks[input.dataset.key];
+  } else {
+    weaponChecks[input.dataset.key] = false;
+    selectedWeaponRuleKey = "";
+    selectedWeaponRuleLabel = "";
+  }
   saveWeaponChecks();
+  renderDetail();
 });
 
 detailView.addEventListener("click", (e) => {
@@ -1401,6 +1533,10 @@ if (toggleScriptBtn) {
 
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
+  if (selectionRulesOverlay && !selectionRulesOverlay.classList.contains("is-hidden")) {
+    closeSelectionRulesOverlay();
+    return;
+  }
   if (!scoreOverlay.classList.contains("is-hidden")) {
     closeScoreOverlay();
     return;
@@ -1439,6 +1575,24 @@ unitFilterBtn.addEventListener("click", () => {
 openScoreBtn.addEventListener("click", () => {
   openScoreOverlay();
 });
+
+if (openSelectionRulesBtn) {
+  openSelectionRulesBtn.addEventListener("click", () => {
+    openSelectionRulesOverlay();
+  });
+}
+
+if (closeSelectionRulesBtn) {
+  closeSelectionRulesBtn.addEventListener("click", () => {
+    closeSelectionRulesOverlay();
+  });
+}
+
+if (selectionRulesOverlay) {
+  selectionRulesOverlay.addEventListener("click", (e) => {
+    if (e.target === selectionRulesOverlay) closeSelectionRulesOverlay();
+  });
+}
 
 closeScoreBtn.addEventListener("click", () => {
   closeScoreOverlay();

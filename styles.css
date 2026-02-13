@@ -194,8 +194,42 @@ button:focus-visible {
   font-size: 18px;
 }
 
+.panel-title-with-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.panel-title-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.panel-action-btn {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(29, 21, 79, 0.9);
+  color: var(--text);
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .panel-action-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
+
 .panel-body {
-  padding: 10px 12px;
+  padding: 10px 0;
 }
 
 .tabs {
@@ -256,7 +290,8 @@ button:focus-visible {
   gap: 8px;
   max-height: none;
   overflow: visible;
-  padding-right: 0;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .item-list::-webkit-scrollbar,
@@ -301,6 +336,24 @@ button:focus-visible {
 
 .item-btn.used {
   opacity: 0.45;
+}
+
+.item-btn.is-unchecked-unit {
+  opacity: 0.4;
+  filter: saturate(0.7);
+}
+
+.item-row.is-unchecked-unit .wound-controls {
+  opacity: 0.45;
+}
+
+.item-row.is-unchecked-unit .wound-value {
+  color: rgba(220, 220, 230, 0.65);
+}
+
+.item-row.is-unchecked-unit .wound-btn {
+  filter: grayscale(1) saturate(0.25);
+  box-shadow: none !important;
 }
 
 .item-row {
@@ -379,6 +432,21 @@ button:focus-visible {
   padding-top: 10px;
 }
 
+#detailView .unit-card {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+#detailView > .card {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+#detailView .unit-card.card-weapon {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .card h3 {
   margin: 0 0 6px;
   letter-spacing: 0.01em;
@@ -429,9 +497,24 @@ th {
   background: rgba(17, 12, 49, 0.9);
 }
 
+.weapon-row.is-unchecked {
+  opacity: 0.34;
+  filter: saturate(0.65);
+}
+
+.weapon-table th,
+.weapon-table td {
+  border-left: 0;
+  border-right: 0;
+}
+
+.weapon-table thead th {
+  border-top: 0;
+}
+
 .text {
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.95;
   white-space: pre-wrap;
 }
 
@@ -510,6 +593,62 @@ th {
 
 .rule-modal-body {
   padding: 12px;
+}
+
+.selection-rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1190;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(6, 4, 17, 0.62);
+  padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
+  touch-action: pan-y;
+}
+
+.selection-rules-modal {
+  width: min(860px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(20, 14, 58, 0.97), rgba(11, 8, 37, 0.97));
+  box-shadow: 0 24px 64px rgba(3, 2, 13, 0.78);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.selection-rules-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  background: rgba(23, 16, 64, 0.86);
+}
+
+.selection-rules-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.selection-rules-close {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(29, 21, 79, 0.9);
+  color: var(--text);
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.selection-rules-body {
+  padding: 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 .floating-actions {
@@ -1001,10 +1140,11 @@ a:hover {
       "check name atk hit dmg"
       "rules rules rules rules rules";
     align-items: center;
-    border: 1px solid rgba(125, 109, 219, 0.35);
-    border-radius: 10px;
-    background: rgba(12, 9, 39, 0.55);
-    overflow: hidden;
+    border: 0;
+    border-bottom: 1px solid rgba(125, 109, 219, 0.35);
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
     margin-bottom: 8px;
   }
 
@@ -1040,7 +1180,7 @@ a:hover {
 
   .weapon-table tbody td:nth-child(6) {
     grid-area: rules;
-    border-top: 1px dashed rgba(125, 109, 219, 0.28);
+    border-top: 0;
     padding-top: 7px;
   }
 

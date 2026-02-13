@@ -29,7 +29,13 @@
 
     <main class="content">
       <section class="panel">
-        <div class="panel-title">隊伍內容切換</div>
+        <div class="panel-title panel-title-with-action">
+          <span>特工清單</span>
+          <div class="panel-title-actions">
+            <button id="openSelectionRulesBtn" class="panel-action-btn" type="button">特工選擇規則</button>
+            <button id="unitFilterBtn" class="panel-action-btn" type="button">單位：顯示全部</button>
+          </div>
+        </div>
         <div class="panel-body">
           <div class="tabs" id="tabs">
             <button class="tab active" data-key="units">單位</button>
@@ -58,9 +64,6 @@
     <button id="openScoreBtn" class="score-fab" type="button">
       計分
     </button>
-    <button id="unitFilterBtn" class="unit-filter-fab" type="button">
-      單位：顯示全部
-    </button>
     <button id="resetWoundsBtn" class="reset-wounds-fab" type="button">
       重置耐傷
     </button>
@@ -70,6 +73,15 @@
     <button id="toggleScriptBtn" class="script-mode-fab" type="button">
       簡/繁
     </button>
+  </div>
+  <div id="selectionRulesOverlay" class="selection-rules-overlay is-hidden" aria-hidden="true">
+    <div class="selection-rules-modal" role="dialog" aria-modal="true" aria-label="特工選擇規則">
+      <div class="selection-rules-head">
+        <h3 id="selectionRulesTitle">特工選擇規則</h3>
+        <button id="closeSelectionRulesBtn" class="selection-rules-close" type="button">關閉</button>
+      </div>
+      <div id="selectionRulesContent" class="selection-rules-body text"></div>
+    </div>
   </div>
   <div id="scoreOverlay" class="score-overlay is-hidden" aria-hidden="true">
     <div class="score-panel" role="dialog" aria-modal="true" aria-label="計分頁面">
@@ -279,7 +291,7 @@
       {"version":"fallback","teams":[]}
     </script>
 
-  <script src="app.js?v=20260212-29"></script>
+  <script src="app.js?v=20260213-31"></script>
 </body>
 
 </html>
