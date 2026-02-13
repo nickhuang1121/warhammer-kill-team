@@ -917,8 +917,7 @@ function getCurrentWounds(teamId, unit) {
 function clearRoundChecksForTeam(teamId) {
   const prefixes = [
     `${teamId}__strategic_ploys__`,
-    `${teamId}__tactical_ploys__`,
-    `${teamId}__equipment__`
+    `${teamId}__tactical_ploys__`
   ];
   for (const key of Object.keys(listChecks)) {
     if (prefixes.some((prefix) => key.startsWith(prefix))) {
