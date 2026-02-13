@@ -343,6 +343,12 @@ button:focus-visible {
   filter: saturate(0.7);
 }
 
+.item-row.is-unchecked-equipment .item-btn,
+.item-btn.is-unchecked-equipment {
+  opacity: 0.42;
+  filter: saturate(0.65);
+}
+
 .item-row.is-unchecked-unit .wound-controls {
   opacity: 0.45;
 }

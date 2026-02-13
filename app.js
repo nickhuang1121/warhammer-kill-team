@@ -4,6 +4,7 @@ const fontSize = document.getElementById("fontSize");
 const teamMeta = document.getElementById("teamMeta");
 const tabs = document.getElementById("tabs");
 const listPanelTitle = document.getElementById("listPanelTitle");
+const panelTitleActions = document.querySelector(".panel-title-actions");
 const itemList = document.getElementById("itemList");
 const detailTitle = document.getElementById("detailTitle");
 const detailView = document.getElementById("detailView");
@@ -21,6 +22,7 @@ if (!ruleModalRoot) {
 }
 const resetPloyChecksBtn = document.getElementById("resetPloyChecksBtn");
 const unitFilterBtn = document.getElementById("unitFilterBtn");
+const equipmentFilterBtn = document.getElementById("equipmentFilterBtn");
 const resetWoundsBtn = document.getElementById("resetWoundsBtn");
 const openScoreBtn = document.getElementById("openScoreBtn");
 const scoreOverlay = document.getElementById("scoreOverlay");
@@ -50,9 +52,11 @@ let weaponChecks = {};
 let listChecks = {};
 let unitWounds = {};
 let weaponRules = { rules: {} };
+let universalEquipment = { equipment: [] };
 let selectedWeaponRuleKey = "";
 let selectedWeaponRuleLabel = "";
 let unitCheckedOnly = false;
+let equipmentCheckedOnly = false;
 const RULE_ALIASES = {
   "眩晕": "晕眩",
   "眩暈": "晕眩",
@@ -100,6 +104,7 @@ let scoreState = {
 const WEAPON_CHECKS_KEY = "kt_weapon_checks_v1";
 const LIST_CHECKS_KEY = "kt_list_checks_v1";
 const UNIT_FILTER_KEY = "kt_units_checked_only_v1";
+const EQUIPMENT_FILTER_KEY = "kt_equipment_checked_only_v1";
 const UNIT_WOUNDS_KEY = "kt_unit_wounds_v1";
 const SCORE_STATE_KEY = "kt_score_state_v1";
 const SCRIPT_MODE_KEY = "kt_script_mode_v1";
@@ -264,6 +269,19 @@ function saveUnitFilter() {
 
 function updateUnitFilterBtnLabel() {
   unitFilterBtn.textContent = unitCheckedOnly ? "單位：只顯示勾選" : "單位：顯示全部";
+}
+
+function loadEquipmentFilter() {
+  equipmentCheckedOnly = localStorage.getItem(EQUIPMENT_FILTER_KEY) === "1";
+}
+
+function saveEquipmentFilter() {
+  localStorage.setItem(EQUIPMENT_FILTER_KEY, equipmentCheckedOnly ? "1" : "0");
+}
+
+function updateEquipmentFilterBtnLabel() {
+  if (!equipmentFilterBtn) return;
+  equipmentFilterBtn.textContent = equipmentCheckedOnly ? "裝備：只顯示勾選" : "裝備：顯示全部";
 }
 
 function loadUnitWounds() {
@@ -878,6 +896,11 @@ function isUnitChecked(key) {
   return listChecks[key] !== false;
 }
 
+function isEquipmentChecked(key) {
+  // Equipment default checked: only explicit false means unchecked.
+  return listChecks[key] !== false;
+}
+
 function unitWoundsKey(teamId, unitId) {
   return `${teamId}__${unitId}`;
 }
@@ -956,6 +979,27 @@ async function loadWeaponRules() {
     } catch { }
   }
   weaponRules = { rules: {} };
+}
+
+async function loadUniversalEquipment() {
+  const candidates = [
+    "data/universal_equipment_zh_cn.json",
+    "./data/universal_equipment_zh_cn.json",
+    "/data/universal_equipment_zh_cn.json",
+    "universal_equipment_zh_cn.json"
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      universalEquipment = await res.json();
+      if (!Array.isArray(universalEquipment.equipment)) {
+        universalEquipment = { equipment: [] };
+      }
+      return;
+    } catch { }
+  }
+  universalEquipment = { equipment: [] };
 }
 
 function getRuleKey(token) {
@@ -1164,6 +1208,7 @@ async function loadDoc() {
   }
   currentTeamId = doc.teams[0].id;
   await loadWeaponRules();
+  await loadUniversalEquipment();
   renderTeams();
   renderAll();
 }
@@ -1173,6 +1218,16 @@ function getTeam() {
 }
 
 function getItems(team) {
+  if (currentTab === "equipment") {
+    const teamEquipment = Array.isArray(team?.equipment) ? team.equipment : [];
+    const commonEquipment = Array.isArray(universalEquipment?.equipment) ? universalEquipment.equipment : [];
+    const appendedCommon = commonEquipment.map((eq, index) => ({
+      ...eq,
+      id: `universal_equipment_${eq.id || index}`,
+      name: `${eq.name || "通用裝備"}（通用）`
+    }));
+    return [...teamEquipment, ...appendedCommon];
+  }
   return team[currentTab] || [];
 }
 
@@ -1197,6 +1252,21 @@ function renderListPanelTitle() {
   listPanelTitle.textContent = listTitleByTab(currentTab);
 }
 
+function renderPanelTitleActions() {
+  const isUnitsTab = currentTab === "units";
+  const isEquipmentTab = currentTab === "equipment";
+  if (panelTitleActions) {
+    panelTitleActions.hidden = !(isUnitsTab || isEquipmentTab);
+    panelTitleActions.style.display = isUnitsTab || isEquipmentTab ? "inline-flex" : "none";
+  }
+  if (openSelectionRulesBtn) openSelectionRulesBtn.style.display = isUnitsTab ? "" : "none";
+  if (unitFilterBtn) unitFilterBtn.style.display = isUnitsTab ? "" : "none";
+  if (equipmentFilterBtn) equipmentFilterBtn.style.display = isEquipmentTab ? "" : "none";
+  if (!isUnitsTab && selectionRulesOverlay && !selectionRulesOverlay.classList.contains("is-hidden")) {
+    closeSelectionRulesOverlay();
+  }
+}
+
 function renderItemList() {
   const team = getTeam();
   const items = getItems(team);
@@ -1214,10 +1284,19 @@ function renderItemList() {
         const key = listCheckKey(team.id, "units", it.id);
         return isUnitChecked(key);
       });
+    } else if (currentTab === "equipment" && equipmentCheckedOnly) {
+      visibleItems = items.filter((it) => {
+        const key = listCheckKey(team.id, "equipment", it.id);
+        return isEquipmentChecked(key);
+      });
     }
 
     if (!visibleItems.length) {
-      itemList.innerHTML = `<div class="meta">${currentTab === "units" && unitCheckedOnly ? "目前沒有已勾選單位。" : "此分類尚無資料。"
+      itemList.innerHTML = `<div class="meta">${currentTab === "units" && unitCheckedOnly
+        ? "目前沒有已勾選單位。"
+        : currentTab === "equipment" && equipmentCheckedOnly
+          ? "目前沒有已勾選裝備。"
+          : "此分類尚無資料。"
         }</div>`;
       currentItemId = "";
       return;
@@ -1232,12 +1311,17 @@ function renderItemList() {
         const usedClass = isPloyTab && listChecks[key] ? "used" : "";
         const maxWounds = Number(it?.stats?.wounds ?? 0);
         const currentWounds = currentTab === "units" ? getCurrentWounds(team.id, it) : null;
-        const checked = currentTab === "units" ? isUnitChecked(key) : !!listChecks[key];
+        const checked = currentTab === "units"
+          ? isUnitChecked(key)
+          : currentTab === "equipment"
+            ? isEquipmentChecked(key)
+            : !!listChecks[key];
         const unitUncheckedClass = currentTab === "units" && !checked ? " is-unchecked-unit" : "";
-        return `<div class="item-row${unitUncheckedClass}">
+        const equipmentUncheckedClass = currentTab === "equipment" && !checked ? " is-unchecked-equipment" : "";
+        return `<div class="item-row${unitUncheckedClass}${equipmentUncheckedClass}">
                 ${isCheckableTab ? `<input type="checkbox" class="list-check" data-key="${key}" ${checked ? "checked" : ""} />` : `<span></span>`}
                 <div class="item-btn-wrap">
-                  <button class="item-btn ${it.id === currentItemId ? "active" : ""} ${usedClass}${unitUncheckedClass}" data-id="${it.id}">${displayHtml(it.name)}</button>
+                  <button class="item-btn ${it.id === currentItemId ? "active" : ""} ${usedClass}${unitUncheckedClass}${equipmentUncheckedClass}" data-id="${it.id}">${displayHtml(it.name)}</button>
                 </div>
                 ${
                   currentTab === "units"
@@ -1368,6 +1452,7 @@ function tabLabel(key) {
 
 function renderAll() {
   renderListPanelTitle();
+  renderPanelTitleActions();
   renderItemList();
   renderDetail();
 }
@@ -1444,6 +1529,13 @@ itemList.addEventListener("change", (e) => {
     } else {
       listChecks[input.dataset.key] = false;
     }
+  } else if (currentTab === "equipment") {
+    // Persist only explicit unchecked for equipment.
+    if (input.checked) {
+      delete listChecks[input.dataset.key];
+    } else {
+      listChecks[input.dataset.key] = false;
+    }
   } else {
     listChecks[input.dataset.key] = input.checked;
   }
@@ -1455,6 +1547,13 @@ itemList.addEventListener("change", (e) => {
     if (row) row.classList.toggle("is-unchecked-unit", !input.checked);
     if (btn) btn.classList.toggle("is-unchecked-unit", !input.checked);
     if (unitCheckedOnly) renderItemList();
+  }
+
+  if (currentTab === "equipment") {
+    const row = input.closest(".item-row");
+    const btn = row?.querySelector(".item-btn");
+    if (row) row.classList.toggle("is-unchecked-equipment", !input.checked);
+    if (btn) btn.classList.toggle("is-unchecked-equipment", !input.checked);
   }
 
   // 即時同步計謀的半透明狀態，不用等下一次重繪。
@@ -1588,12 +1687,26 @@ unitFilterBtn.addEventListener("click", () => {
   renderAll();
 });
 
+if (equipmentFilterBtn) {
+  equipmentFilterBtn.addEventListener("click", () => {
+    equipmentCheckedOnly = !equipmentCheckedOnly;
+    saveEquipmentFilter();
+    updateEquipmentFilterBtnLabel();
+    if (currentTab === "equipment") {
+      selectedWeaponRuleKey = "";
+      selectedWeaponRuleLabel = "";
+    }
+    renderAll();
+  });
+}
+
 openScoreBtn.addEventListener("click", () => {
   openScoreOverlay();
 });
 
 if (openSelectionRulesBtn) {
   openSelectionRulesBtn.addEventListener("click", () => {
+    if (currentTab !== "units") return;
     openSelectionRulesOverlay();
   });
 }
@@ -1745,7 +1858,9 @@ loadScriptMode();
 loadWeaponChecks();
 loadListChecks();
 loadUnitFilter();
+loadEquipmentFilter();
 loadUnitWounds();
 loadScoreState();
 updateUnitFilterBtnLabel();
+updateEquipmentFilterBtnLabel();
 loadDoc();
