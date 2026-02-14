@@ -45,6 +45,7 @@ if (tabs && tabs.parentElement !== document.body) {
 }
 
 let doc = { teams: [] };
+let enDoc = { teams: [] };
 let currentTeamId = "";
 let currentTab = "units";
 let currentItemId = "";
@@ -57,6 +58,7 @@ let selectedWeaponRuleKey = "";
 let selectedWeaponRuleLabel = "";
 let unitCheckedOnly = false;
 let equipmentCheckedOnly = false;
+let showEnglishCompare = false;
 const RULE_ALIASES = {
   "眩晕": "晕眩",
   "眩暈": "晕眩",
@@ -1001,13 +1003,35 @@ async function loadUniversalEquipment() {
   universalEquipment = { equipment: [] };
 }
 
+async function loadEnglishDoc() {
+  const candidates = [
+    "data/kt_teams_test_en.json",
+    "./data/kt_teams_test_en.json",
+    "/data/kt_teams_test_en.json",
+    "kt_teams_test_en.json"
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const parsed = await res.json();
+      if (Array.isArray(parsed?.teams)) {
+        enDoc = parsed;
+        return;
+      }
+    } catch { }
+  }
+  enDoc = { teams: [] };
+}
+
 function getRuleKey(token) {
   const t = toCanonicalRuleToken(token)
     .replace(/^\d+\s*[\"“”]?\s*/g, "");
   const keys = [
-    "关键穿刺", "穿刺", "精准", "平衡", "爆炸", "残暴", "无休", "毁灭", "重型",
+    "穿刺暴击", "关键穿刺", "穿刺", "精准", "平衡", "爆炸", "残暴", "无休", "毁灭", "重型",
     "过热", "致命", "有限", "重击", "范围", "毫不留情", "撕裂", "集中", "追踪",
-    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置"
+    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置",
+    "反灵能者", "护盾"
   ];
   return keys.find((k) => t.startsWith(k)) || "";
 }
@@ -1200,6 +1224,8 @@ async function loadDoc() {
     doc = JSON.parse(document.getElementById("fallbackData").textContent);
     detailView.innerHTML = `<div class="meta">JSON 載入失敗：${escapeHtml(lastErr || "未知錯誤")}<br/>請確認你是用 Live Server 開啟，且路徑存在。</div>`;
   }
+  // 暫時不載入爐心打撈者，保留原始 JSON 以便之後恢復。
+  doc.teams = (doc.teams || []).filter((t) => t.id !== "hearthkyn_salvagers");
   if (!doc.teams.length) {
     if (!loaded) return;
     detailView.innerHTML = `<div class="meta">沒有可用資料，請確認 JSON 檔案存在且格式正確。</div>`;
@@ -1208,12 +1234,48 @@ async function loadDoc() {
   currentTeamId = doc.teams[0].id;
   await loadWeaponRules();
   await loadUniversalEquipment();
+  await loadEnglishDoc();
   renderTeams();
   renderAll();
 }
 
 function getTeam() {
   return doc.teams.find((t) => t.id === currentTeamId) || doc.teams[0];
+}
+
+function getEnglishTeam(teamId) {
+  return (enDoc.teams || []).find((t) => t.id === teamId) || null;
+}
+
+function getEnglishCompareData(team, item, tabKey) {
+  const enTeam = getEnglishTeam(team.id);
+  if (!enTeam || !item) return null;
+
+  if (tabKey === "units") {
+    const idx = (team.units || []).findIndex((x) => x.id === item.id);
+    if (idx < 0) return null;
+    const enUnit = (enTeam.units || [])[idx];
+    if (!enUnit) return null;
+    const abilities = Array.isArray(enUnit.abilities) ? enUnit.abilities.filter(Boolean) : [];
+    if (!abilities.length) return null;
+    return {
+      title: `${enUnit.name || "Unit"} (EN)`,
+      body: abilities.join("\n\n")
+    };
+  }
+
+  if (["faction_rules", "strategic_ploys", "tactical_ploys", "equipment"].includes(tabKey)) {
+    const idx = (team[tabKey] || []).findIndex((x) => x.id === item.id);
+    if (idx < 0) return null;
+    const enItem = (enTeam[tabKey] || [])[idx];
+    if (!enItem || !enItem.effect) return null;
+    return {
+      title: `${enItem.name || "Item"} (EN)`,
+      body: enItem.effect
+    };
+  }
+
+  return null;
 }
 
 function getItems(team) {
@@ -1358,6 +1420,7 @@ function renderDetail() {
   }
 
   detailTitle.textContent = convertForDisplay(`${team.name} / ${tabLabel(currentTab)} / ${item.name}`);
+  const englishCompare = getEnglishCompareData(team, item, currentTab);
 
   const mainText = item.effect || "";
   const ruleModalHtml = renderRuleModal();
@@ -1417,11 +1480,17 @@ function renderDetail() {
       }
             </div>
             <div class="card unit-card">
-              <h3>能力（技能）</h3>
+              <div class="card-head-with-action">
+                <h3>能力（技能）</h3>
+                ${englishCompare ? `<button type="button" class="inline-compare-btn" data-toggle-en-compare="1">英文版對照</button>` : ""}
+              </div>
               ${abilities.length
         ? `<div class="text ability-text">${abilities.map((ab) => renderAbilityText(ab)).join("\n\n")}</div>`
         : `<div class="meta">（此單位尚未填能力資料）</div>`
       }
+              ${englishCompare && showEnglishCompare
+        ? `<div class="text compare-text"><strong>${escapeHtml(englishCompare.title)}</strong>\n\n${escapeHtml(englishCompare.body || "")}</div>`
+        : ""}
             </div>
             <div class="card unit-card">
               <h3>關鍵字</h3>
@@ -1433,8 +1502,14 @@ function renderDetail() {
 
   detailView.innerHTML = `
           <div class="card">
-            <h3>${displayHtml(item.name)}</h3>
+            <div class="card-head-with-action">
+              <h3>${displayHtml(item.name)}</h3>
+              ${englishCompare ? `<button type="button" class="inline-compare-btn" data-toggle-en-compare="1">英文版對照</button>` : ""}
+            </div>
             <div class="text">${mainTextHtml}</div>
+            ${englishCompare && showEnglishCompare
+      ? `<div class="text compare-text"><strong>${escapeHtml(englishCompare.title)}</strong>\n\n${escapeHtml(englishCompare.body || "")}</div>`
+      : ""}
           </div>
           ${renderItemImages(item)}
         `;
@@ -1469,6 +1544,7 @@ teamSelect.addEventListener("change", () => {
   currentItemId = "";
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
+  showEnglishCompare = false;
   [...tabs.querySelectorAll(".tab")].forEach((x) =>
     x.classList.toggle("active", x.dataset.key === "units")
   );
@@ -1485,6 +1561,7 @@ tabs.addEventListener("click", (e) => {
   currentItemId = "";
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
+  showEnglishCompare = false;
   [...tabs.querySelectorAll(".tab")].forEach((x) => x.classList.toggle("active", x === btn));
   renderAll();
 });
@@ -1514,6 +1591,7 @@ itemList.addEventListener("click", (e) => {
   currentItemId = btn.dataset.id;
   selectedWeaponRuleKey = "";
   selectedWeaponRuleLabel = "";
+  showEnglishCompare = false;
   renderAll();
   scrollToDetailOnMobile();
 });
@@ -1591,6 +1669,13 @@ detailView.addEventListener("change", (e) => {
 });
 
 detailView.addEventListener("click", (e) => {
+  const enCompareBtn = e.target.closest("[data-toggle-en-compare]");
+  if (enCompareBtn) {
+    showEnglishCompare = !showEnglishCompare;
+    renderDetail();
+    return;
+  }
+
   const btn = e.target.closest(".rule-chip");
   if (btn) {
     selectedWeaponRuleKey = btn.dataset.ruleKey || "";
