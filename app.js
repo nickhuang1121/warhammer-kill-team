@@ -1244,7 +1244,11 @@ function getTeam() {
 }
 
 function getEnglishTeam(teamId) {
-  return (enDoc.teams || []).find((t) => t.id === teamId) || null;
+  const team = (enDoc.teams || []).find((t) => t.id === teamId) || null;
+  if (!team) return null;
+  const pdf = String(team.pdf_url || "").toLowerCase();
+  const hasEnglishSource = pdf.includes("/eng_") || pdf.includes("eng_");
+  return hasEnglishSource ? team : null;
 }
 
 function getEnglishCompareData(team, item, tabKey) {
