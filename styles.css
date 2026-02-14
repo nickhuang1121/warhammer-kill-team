@@ -628,6 +628,14 @@ th {
   padding: 12px;
 }
 
+.rule-modal-image {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid rgba(133, 118, 255, 0.35);
+  border-radius: 10px;
+}
+
 .selection-rules-overlay {
   position: fixed;
   inset: 0;

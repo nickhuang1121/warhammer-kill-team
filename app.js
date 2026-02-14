@@ -1030,7 +1030,7 @@ function getRuleKey(token) {
   const keys = [
     "穿刺暴击", "关键穿刺", "穿刺", "精准", "平衡", "爆炸", "残暴", "无休", "毁灭", "重型",
     "过热", "致命", "有限", "重击", "范围", "毫不留情", "撕裂", "集中", "追踪",
-    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置",
+    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置", "射线", "强力冲撞",
     "反灵能者", "护盾"
   ];
   return keys.find((k) => t.startsWith(k)) || "";
@@ -1182,6 +1182,10 @@ function renderItemImages(item) {
 
 function renderRuleModal() {
   if (!selectedWeaponRuleKey || !weaponRules.rules?.[selectedWeaponRuleKey]) return "";
+  const ruleImageMap = {
+    "射线": { src: "images/weapon_rules_beam.png", alt: "射线规则示意图" }
+  };
+  const ruleImage = ruleImageMap[selectedWeaponRuleKey];
   return `<div class="rule-modal-overlay" data-close-rule-modal="1">
             <div class="rule-modal" role="dialog" aria-modal="true" aria-label="武器規則說明">
               <div class="rule-modal-head">
@@ -1190,6 +1194,7 @@ function renderRuleModal() {
               </div>
               <div class="rule-modal-body">
                 <div class="text">${displayHtml(weaponRules.rules[selectedWeaponRuleKey])}</div>
+                ${ruleImage ? `<img class="rule-modal-image" src="${escapeHtml(ruleImage.src)}" alt="${escapeHtml(ruleImage.alt)}" loading="lazy" />` : ""}
               </div>
             </div>
           </div>`;
@@ -1224,8 +1229,6 @@ async function loadDoc() {
     doc = JSON.parse(document.getElementById("fallbackData").textContent);
     detailView.innerHTML = `<div class="meta">JSON 載入失敗：${escapeHtml(lastErr || "未知錯誤")}<br/>請確認你是用 Live Server 開啟，且路徑存在。</div>`;
   }
-  // 暫時不載入爐心打撈者，保留原始 JSON 以便之後恢復。
-  doc.teams = (doc.teams || []).filter((t) => t.id !== "hearthkyn_salvagers");
   if (!doc.teams.length) {
     if (!loaded) return;
     detailView.innerHTML = `<div class="meta">沒有可用資料，請確認 JSON 檔案存在且格式正確。</div>`;
