@@ -1,0 +1,430 @@
+{
+  "generated_at": "2026-02-16",
+  "scope": "added_35_teams_only_post_reparse",
+  "summary": {
+    "clean": 35,
+    "flagged": 0
+  },
+  "teams": [
+    {
+      "id": "inquisitorial_agents",
+      "name": "审判庭特勤",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "blades_of_khaine",
+      "name": "凯恩之刃",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 7,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "blooded",
+      "name": "浴血者",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "brood_brothers",
+      "name": "族群裔兵",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "chaos_cult",
+      "name": "混沌教派",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 3,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "fellgor_ravagers",
+      "name": "恶角兽掠夺者",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "gellerpox_infected",
+      "name": "盖勒痘魔",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 4,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "goremongers",
+      "name": "洒血狂",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 4,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "wrecka_krew",
+      "name": "破坏专队",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "wyrmblade",
+      "name": "虫刃",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 3,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "xv26_stealth_battlesuits",
+      "name": "XV26 隐形战斗服",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "hernkyn_yaegirs",
+      "name": "远行者猎手",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "kommandos",
+      "name": "特种兵",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "legionaries",
+      "name": "军团",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "novitiates",
+      "name": "见习修女",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "phobos_strike_team",
+      "name": "恐惧突袭小队",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 4,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "raveners",
+      "name": "蛇虫",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 3,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "sanctifiers",
+      "name": "净化者",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "vespid_stingwings",
+      "name": "胡蜂尖翼",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 3,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "void_dancer_troupe",
+      "name": "虚空舞者剧团",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "angels_of_death",
+      "name": "死亡天使",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "battleclade",
+      "name": "战斗支队",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "canoptek_circle",
+      "name": "冥工之环",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "corsair_voidscarred",
+      "name": "虚空创痕海盗",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "death_korps",
+      "name": "死亡军团",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "deathwatch",
+      "name": "死亡守望",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "elucidian_starstriders",
+      "name": "艾露西亚星行者",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "farstalker_kinband",
+      "name": "远行者族团",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "hand_of_the_archon",
+      "name": "执政官之手",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "hunter_clade",
+      "name": "猎手支队",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "kasrkin",
+      "name": "卡舍津",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "mandrakes",
+      "name": "曼德拉",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 4,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "ratlings",
+      "name": "莱特林",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "scout_squad",
+      "name": "侦查小队",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "warpcoven",
+      "name": "次元密会",
+      "status": "clean",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    }
+  ]
+}

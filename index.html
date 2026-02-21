@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-Hans">
 
 <head>
   <meta charset="UTF-8" />
@@ -16,9 +16,12 @@
     </header>
 
     <section class="toolbar">
-      <label>
+      <label class="team-select-control">
         切換隊伍
-        <select id="teamSelect"></select>
+        <div class="team-select-row">
+          <select id="teamSelect"></select>
+          <input id="teamPinCheckbox" class="team-pin-checkbox" type="checkbox" aria-label="優先排序目前隊伍" title="優先排序目前隊伍" />
+        </div>
       </label>
       <label class="font-size-control">
         字級
@@ -70,9 +73,6 @@
     </button>
     <button id="resetPloyChecksBtn" class="reset-ploy-fab" type="button">
       重置計謀
-    </button>
-    <button id="toggleScriptBtn" class="script-mode-fab" type="button">
-      簡/繁
     </button>
   </div>
   <div id="selectionRulesOverlay" class="selection-rules-overlay is-hidden" aria-hidden="true">

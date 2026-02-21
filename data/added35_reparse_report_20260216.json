@@ -1,0 +1,387 @@
+[
+  {
+    "id": "inquisitorial_agents",
+    "name": "审判庭特勤",
+    "title": "审判庭特勤",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "blades_of_khaine",
+    "name": "凯恩之刃",
+    "title": "凯恩之刃",
+    "counts": {
+      "faction_rules": 7,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "blooded",
+    "name": "浴血者",
+    "title": "浴血者",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "brood_brothers",
+    "name": "族群裔兵",
+    "title": "族群裔兵",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "chaos_cult",
+    "name": "混沌教派",
+    "title": "混沌教派",
+    "counts": {
+      "faction_rules": 3,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "fellgor_ravagers",
+    "name": "恶角兽掠夺者",
+    "title": "恶角兽掠夺者",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "gellerpox_infected",
+    "name": "盖勒痘魔",
+    "title": "盖勒痘魔",
+    "counts": {
+      "faction_rules": 4,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "goremongers",
+    "name": "洒血狂",
+    "title": "洒血狂",
+    "counts": {
+      "faction_rules": 4,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "wrecka_krew",
+    "name": "破坏专队",
+    "title": "破坏专队",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "wyrmblade",
+    "name": "虫刃",
+    "title": "虫刃",
+    "counts": {
+      "faction_rules": 3,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "xv26_stealth_battlesuits",
+    "name": "XV26 隐形战斗服",
+    "title": "XV26 隐形战斗服",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "hernkyn_yaegirs",
+    "name": "远行者猎手",
+    "title": "远行者猎手",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "kommandos",
+    "name": "特种兵",
+    "title": "特种兵",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "legionaries",
+    "name": "军团",
+    "title": "军团",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "novitiates",
+    "name": "见习修女",
+    "title": "见习修女",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "phobos_strike_team",
+    "name": "恐惧突袭小队",
+    "title": "恐惧突袭小队",
+    "counts": {
+      "faction_rules": 4,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "raveners",
+    "name": "蛇虫",
+    "title": "蛇虫",
+    "counts": {
+      "faction_rules": 3,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "sanctifiers",
+    "name": "净化者",
+    "title": "净化者",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "vespid_stingwings",
+    "name": "胡蜂尖翼",
+    "title": "胡蜂尖翼",
+    "counts": {
+      "faction_rules": 3,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "void_dancer_troupe",
+    "name": "虚空舞者剧团",
+    "title": "虚空舞者剧团",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "angels_of_death",
+    "name": "死亡天使",
+    "title": "死亡天使",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "battleclade",
+    "name": "战斗支队",
+    "title": "战斗支队",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "canoptek_circle",
+    "name": "冥工之环",
+    "title": "冥工之环",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "corsair_voidscarred",
+    "name": "虚空创痕海盗",
+    "title": "虚空创痕海盗",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "death_korps",
+    "name": "死亡军团",
+    "title": "死亡军团",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "deathwatch",
+    "name": "死亡守望",
+    "title": "死亡守望",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "elucidian_starstriders",
+    "name": "艾露西亚星行者",
+    "title": "艾露西亚星行者",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "farstalker_kinband",
+    "name": "远行者族团",
+    "title": "远猎者族团",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "hand_of_the_archon",
+    "name": "执政官之手",
+    "title": "执政官之手",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "hunter_clade",
+    "name": "猎手支队",
+    "title": "猎手支队",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "kasrkin",
+    "name": "卡舍津",
+    "title": "卡舍津",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "mandrakes",
+    "name": "曼德拉",
+    "title": "曼德拉",
+    "counts": {
+      "faction_rules": 4,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "ratlings",
+    "name": "莱特林",
+    "title": "莱特林",
+    "counts": {
+      "faction_rules": 1,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "scout_squad",
+    "name": "侦查小队",
+    "title": "侦查小队",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  },
+  {
+    "id": "warpcoven",
+    "name": "次元密会",
+    "title": "次元密会",
+    "counts": {
+      "faction_rules": 2,
+      "strategic_ploys": 4,
+      "tactical_ploys": 4,
+      "equipment": 4
+    }
+  }
+]

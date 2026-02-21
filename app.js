@@ -1,4 +1,5 @@
 const teamSelect = document.getElementById("teamSelect");
+const teamPinCheckbox = document.getElementById("teamPinCheckbox");
 const toggleScriptBtn = document.getElementById("toggleScriptBtn");
 const fontSize = document.getElementById("fontSize");
 const teamMeta = document.getElementById("teamMeta");
@@ -59,11 +60,14 @@ let selectedWeaponRuleLabel = "";
 let unitCheckedOnly = false;
 let equipmentCheckedOnly = false;
 let showEnglishCompare = false;
+let teamPriority = {};
 const RULE_ALIASES = {
   "眩晕": "晕眩",
   "眩暈": "晕眩",
   "暈眩": "晕眩"
 };
+const SPECIAL_WEAPON_RULE_START_KEY = "毒素";
+const NON_MODAL_RULE_KEYS = new Set();
 let timerRunning = false;
 let timerHasStarted = false;
 let timerElapsedMs = 0;
@@ -110,6 +114,7 @@ const EQUIPMENT_FILTER_KEY = "kt_equipment_checked_only_v1";
 const UNIT_WOUNDS_KEY = "kt_unit_wounds_v1";
 const SCORE_STATE_KEY = "kt_score_state_v1";
 const SCRIPT_MODE_KEY = "kt_script_mode_v1";
+const TEAM_PRIORITY_KEY = "kt_team_priority_v1";
 let scriptMode = "zh-CN";
 
 const TRAD_PHRASE_MAP = {
@@ -261,6 +266,38 @@ function saveListChecks() {
   localStorage.setItem(LIST_CHECKS_KEY, JSON.stringify(listChecks));
 }
 
+function loadTeamPriority() {
+  try {
+    teamPriority = JSON.parse(localStorage.getItem(TEAM_PRIORITY_KEY) || "{}");
+  } catch {
+    teamPriority = {};
+  }
+}
+
+function saveTeamPriority() {
+  localStorage.setItem(TEAM_PRIORITY_KEY, JSON.stringify(teamPriority));
+}
+
+function isTeamPinned(teamId) {
+  return !!teamPriority[teamId];
+}
+
+function getSortedTeams() {
+  const teams = Array.isArray(doc.teams) ? doc.teams : [];
+  return teams
+    .map((team, idx) => ({ team, idx, pinned: isTeamPinned(team.id) ? 1 : 0 }))
+    .sort((a, b) => {
+      if (b.pinned !== a.pinned) return b.pinned - a.pinned;
+      return a.idx - b.idx;
+    })
+    .map((x) => x.team);
+}
+
+function updateTeamPinCheckboxState() {
+  if (!teamPinCheckbox) return;
+  teamPinCheckbox.checked = isTeamPinned(currentTeamId);
+}
+
 function loadUnitFilter() {
   unitCheckedOnly = localStorage.getItem(UNIT_FILTER_KEY) === "1";
 }
@@ -299,8 +336,8 @@ function saveUnitWounds() {
 }
 
 function loadScriptMode() {
-  const saved = localStorage.getItem(SCRIPT_MODE_KEY);
-  scriptMode = saved === "zh-Hant" ? "zh-Hant" : "zh-CN";
+  // GW 來源僅提供簡體內容，固定顯示簡體。
+  scriptMode = "zh-CN";
   updateScriptButtonLabel();
 }
 
@@ -309,11 +346,12 @@ function saveScriptMode() {
 }
 
 function updateScriptButtonLabel() {
-  if (!toggleScriptBtn) return;
   const isTrad = scriptMode === "zh-Hant";
-  toggleScriptBtn.textContent = isTrad ? "簡/繁：繁" : "簡/繁：簡";
-  toggleScriptBtn.title = isTrad ? "目前：繁體（點擊切換簡體）" : "目前：简体（點擊切換繁體）";
-  toggleScriptBtn.classList.toggle("is-trad", isTrad);
+  if (toggleScriptBtn) {
+    toggleScriptBtn.textContent = isTrad ? "簡/繁：繁" : "簡/繁：簡";
+    toggleScriptBtn.title = isTrad ? "目前：繁體（點擊切換簡體）" : "目前：简体（點擊切換繁體）";
+    toggleScriptBtn.classList.toggle("is-trad", isTrad);
+  }
   document.documentElement.lang = isTrad ? "zh-Hant" : "zh-Hans";
   document.body.dataset.scriptMode = scriptMode;
 }
@@ -973,13 +1011,22 @@ async function loadWeaponRules() {
   ];
   for (const url of candidates) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
       weaponRules = await res.json();
+      NON_MODAL_RULE_KEYS.clear();
+      const ruleKeys = Object.keys(weaponRules?.rules || {});
+      const startIdx = ruleKeys.indexOf(SPECIAL_WEAPON_RULE_START_KEY);
+      if (startIdx >= 0) {
+        for (let i = startIdx; i < ruleKeys.length; i += 1) {
+          NON_MODAL_RULE_KEYS.add(ruleKeys[i]);
+        }
+      }
       return;
     } catch { }
   }
   weaponRules = { rules: {} };
+  NON_MODAL_RULE_KEYS.clear();
 }
 
 async function loadUniversalEquipment() {
@@ -991,7 +1038,7 @@ async function loadUniversalEquipment() {
   ];
   for (const url of candidates) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
       universalEquipment = await res.json();
       if (!Array.isArray(universalEquipment.equipment)) {
@@ -1012,7 +1059,7 @@ async function loadEnglishDoc() {
   ];
   for (const url of candidates) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
       const parsed = await res.json();
       if (Array.isArray(parsed?.teams)) {
@@ -1030,8 +1077,8 @@ function getRuleKey(token) {
   const keys = [
     "穿刺暴击", "关键穿刺", "穿刺", "精准", "平衡", "爆炸", "残暴", "无休", "毁灭", "重型",
     "过热", "致命", "有限", "重击", "范围", "毫不留情", "撕裂", "集中", "追踪",
-    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置", "射线", "强力冲撞",
-    "反灵能者", "护盾"
+    "严重", "震荡", "安静", "晕眩", "洪流", "灵能", "增幅", "毒素", "剧毒", "恐惧试剂", "乱射", "隐匿位置", "射线", "天炬", "强力冲撞",
+    "反灵能者", "护盾", "盾牌", "夺颅者", "触觉猎手", "恶毒打击"
   ];
   return keys.find((k) => t.startsWith(k)) || "";
 }
@@ -1050,6 +1097,10 @@ function normalizeRuleToken(token) {
     .trim();
 }
 
+function isRuleModalEnabled(key) {
+  return Boolean(key) && !NON_MODAL_RULE_KEYS.has(key);
+}
+
 function renderWeaponRulesCell(rawRules) {
   const text = normalizeRuleToken(rawRules);
   if (!text || text === "-") return "-";
@@ -1060,7 +1111,7 @@ function renderWeaponRulesCell(rawRules) {
   if (!tokens.length) return displayHtml(text);
   return `<div class="rule-chips">${tokens.map((token) => {
     const key = getRuleKey(token);
-    if (!key || !weaponRules.rules?.[key]) return `<span>${displayHtml(token)}</span>`;
+    if (!key || !weaponRules.rules?.[key] || !isRuleModalEnabled(key)) return `<span>${displayHtml(token)}</span>`;
     const active = key === selectedWeaponRuleKey ? "active" : "";
     return `<button type="button" class="rule-chip ${active}" data-rule-key="${escapeHtml(key)}" data-rule-label="${escapeHtml(token)}">${displayHtml(token)}</button>`;
   }).join("")}</div>`;
@@ -1099,7 +1150,7 @@ function renderTextWithRuleLinks(rawText) {
     const rawKey = match[0];
     const key = RULE_ALIASES[rawKey] || rawKey;
     out += displayHtml(text.slice(last, idx));
-    if (!weaponRules.rules?.[key] || shouldSkipRuleLink(text, key, idx)) {
+    if (!weaponRules.rules?.[key] || shouldSkipRuleLink(text, key, idx) || !isRuleModalEnabled(key)) {
       out += displayHtml(rawKey);
     } else {
       const active = key === selectedWeaponRuleKey ? "active" : "";
@@ -1161,12 +1212,20 @@ function renderUnitKeywords(team, item) {
 }
 
 function renderItemImages(item) {
-  const images = Array.isArray(item?.images) ? item.images : [];
-  if (!images.length) return "";
+  const figuresHtml = renderItemImageFigures(item);
+  if (!figuresHtml) return "";
   return `<div class="card">
             <h3>示意圖</h3>
             <div class="item-image-list">
-              ${images
+              ${figuresHtml}
+            </div>
+          </div>`;
+}
+
+function renderItemImageFigures(item) {
+  const images = Array.isArray(item?.images) ? item.images : [];
+  if (!images.length) return "";
+  return images
       .map((img) => {
         const src = typeof img === "string" ? img : img?.src || "";
         const alt = typeof img === "string" ? item?.name || "示意圖" : img?.alt || item?.name || "示意圖";
@@ -1175,13 +1234,35 @@ function renderItemImages(item) {
                   <img class="item-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" />
                 </figure>`;
       })
-      .join("")}
-            </div>
-          </div>`;
+      .join("");
+}
+
+function renderUnitAbilitiesHtml(item, abilities) {
+  const list = Array.isArray(abilities) ? abilities.filter(Boolean) : [];
+  if (!list.length) return { html: "", imageInserted: false };
+  const imageFigures = renderItemImageFigures(item);
+  const forceSkytorchInline = item?.id === "vespid_stingwings_胡蜂族群卫士" && Boolean(imageFigures);
+  let imageInserted = false;
+  const html = list
+    .map((ab, index) => {
+      const abilityHtml = `<div>${renderAbilityText(ab)}</div>`;
+      const normalized = normalizeRuleToken(normalizeAbilityText(ab));
+      if (!imageInserted && imageFigures && (normalized.includes("*天炬：") || normalized.includes("天炬："))) {
+        imageInserted = true;
+        return `${abilityHtml}<div class="item-image-list">${imageFigures}</div>`;
+      }
+      if (!imageInserted && forceSkytorchInline && index === 0) {
+        imageInserted = true;
+        return `${abilityHtml}<div class="item-image-list">${imageFigures}</div>`;
+      }
+      return abilityHtml;
+    })
+    .join("\n\n");
+  return { html, imageInserted };
 }
 
 function renderRuleModal() {
-  if (!selectedWeaponRuleKey || !weaponRules.rules?.[selectedWeaponRuleKey]) return "";
+  if (!selectedWeaponRuleKey || !weaponRules.rules?.[selectedWeaponRuleKey] || !isRuleModalEnabled(selectedWeaponRuleKey)) return "";
   const ruleImageMap = {
     "射线": { src: "images/weapon_rules_beam.png", alt: "射线规则示意图" }
   };
@@ -1213,7 +1294,7 @@ async function loadDoc() {
   let loaded = false;
   for (const url of docCandidates) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) {
         lastErr = `${url} -> HTTP ${res.status}`;
         continue;
@@ -1234,7 +1315,7 @@ async function loadDoc() {
     detailView.innerHTML = `<div class="meta">沒有可用資料，請確認 JSON 檔案存在且格式正確。</div>`;
     return;
   }
-  currentTeamId = doc.teams[0].id;
+  currentTeamId = getSortedTeams()[0]?.id || doc.teams[0].id;
   await loadWeaponRules();
   await loadUniversalEquipment();
   await loadEnglishDoc();
@@ -1300,10 +1381,15 @@ function getItems(team) {
 }
 
 function renderTeams() {
-  teamSelect.innerHTML = doc.teams
-    .map((t) => `<option value="${t.id}">${displayHtml(t.name)}</option>`)
+  const sortedTeams = getSortedTeams();
+  teamSelect.innerHTML = sortedTeams
+    .map((t) => `<option value="${t.id}">${isTeamPinned(t.id) ? "★ " : ""}${displayHtml(t.name)}</option>`)
     .join("");
+  if (!sortedTeams.some((t) => t.id === currentTeamId)) {
+    currentTeamId = sortedTeams[0]?.id || "";
+  }
   teamSelect.value = currentTeamId;
+  updateTeamPinCheckboxState();
 }
 
 function listTitleByTab(key) {
@@ -1441,6 +1527,7 @@ function renderDetail() {
     const st = item.stats || {};
     const weapons = item.weapons || [];
     const abilities = item.abilities || [];
+    const renderedAbilities = renderUnitAbilitiesHtml(item, abilities);
     detailView.innerHTML = `
             <div class="card unit-card unit-card-stats">
               <h3>${displayHtml(item.name)}</h3>
@@ -1492,7 +1579,7 @@ function renderDetail() {
                 ${englishCompare ? `<button type="button" class="inline-compare-btn" data-toggle-en-compare="1">英文版對照</button>` : ""}
               </div>
               ${abilities.length
-        ? `<div class="text ability-text">${abilities.map((ab) => renderAbilityText(ab)).join("\n\n")}</div>`
+        ? `<div class="text ability-text">${renderedAbilities.html}</div>`
         : `<div class="meta">（此單位尚未填能力資料）</div>`
       }
               ${englishCompare && showEnglishCompare
@@ -1503,6 +1590,7 @@ function renderDetail() {
               <h3>關鍵字</h3>
               ${renderUnitKeywords(team, item)}
             </div>
+            ${renderedAbilities.imageInserted ? "" : renderItemImages(item)}
           `;
     return;
   }
@@ -1547,6 +1635,7 @@ function scrollToDetailOnMobile() {
 
 teamSelect.addEventListener("change", () => {
   currentTeamId = teamSelect.value;
+  updateTeamPinCheckboxState();
   currentTab = "units";
   currentItemId = "";
   selectedWeaponRuleKey = "";
@@ -1560,6 +1649,19 @@ teamSelect.addEventListener("change", () => {
     renderSelectionRulesOverlay();
   }
 });
+
+if (teamPinCheckbox) {
+  teamPinCheckbox.addEventListener("change", () => {
+    if (!currentTeamId) return;
+    if (teamPinCheckbox.checked) {
+      teamPriority[currentTeamId] = true;
+    } else {
+      delete teamPriority[currentTeamId];
+    }
+    saveTeamPriority();
+    renderTeams();
+  });
+}
 
 tabs.addEventListener("click", (e) => {
   const btn = e.target.closest(".tab");
@@ -1685,7 +1787,9 @@ detailView.addEventListener("click", (e) => {
 
   const btn = e.target.closest(".rule-chip");
   if (btn) {
-    selectedWeaponRuleKey = btn.dataset.ruleKey || "";
+    const nextKey = btn.dataset.ruleKey || "";
+    if (!isRuleModalEnabled(nextKey)) return;
+    selectedWeaponRuleKey = nextKey;
     selectedWeaponRuleLabel = btn.dataset.ruleLabel || selectedWeaponRuleKey;
     renderDetail();
     return;
@@ -1948,6 +2052,7 @@ if (scoreTimerEndBtn) {
 loadScriptMode();
 loadWeaponChecks();
 loadListChecks();
+loadTeamPriority();
 loadUnitFilter();
 loadEquipmentFilter();
 loadUnitWounds();

@@ -1,0 +1,2289 @@
+{
+  "generated_at": "2026-02-16",
+  "total_teams": 46,
+  "summary": {
+    "pass": 12,
+    "fail": 34
+  },
+  "teams": [
+    {
+      "id": "wolf_scouts",
+      "name": "狼偵查殺戮小隊",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "plague_marines",
+      "name": "瘟疫戰士",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "tempestus_aquilons",
+      "name": "風暴飛鷹",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "murderwing",
+      "name": "屠戮之翼",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "hierotek_circle",
+      "name": "神聖技師之環",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "nemesis_claw",
+      "name": "復仇之爪",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "exaction_squad",
+      "name": "强征小队",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "pathfinders",
+      "name": "探路者",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "hearthkyn_salvagers",
+      "name": "炉心打捞者",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "celestian_insidiants",
+      "name": "洁天使隐伏者",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "imperial_navy_breachers",
+      "name": "帝国海军跳帮队",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "inquisitorial_agents",
+      "name": "审判庭特勤",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 1,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "定罪 严密检查"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "定罪 严密检查"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "猎物 绝对审判"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "猎物 绝对审判"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "帝皇的意志 可怕存在"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "帝皇的意志 可怕存在"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "审判圣徽 格斗匕首"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "审判圣徽 格斗匕首"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "装甲紧身衣 伺服颅骨"
+        }
+      ]
+    },
+    {
+      "id": "blades_of_khaine",
+      "name": "凯恩之刃",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 1,
+        "tactical_ploys": 2,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "泪雨 特技"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "灵骨护身符 守护符文 预知符文"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "死亡之舞 刃风"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "星陨 光芒消退"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "守护符文 先见符文"
+        }
+      ]
+    },
+    {
+      "id": "blooded",
+      "name": "浴血者",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 3,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "鲁莽进取 歹毒勇气"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "苦涩退场 冷漠无情"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "名誉时刻 赢取奖赏"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "黑暗青睐 混沌纹章"
+        }
+      ]
+    },
+    {
+      "id": "brood_brothers",
+      "name": "族群裔兵",
+      "status": "pass",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": []
+    },
+    {
+      "id": "chaos_cult",
+      "name": "混沌教派",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "痛苦之乐 狂热猛攻"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "噩梦生物 恶心气场"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "忠诚追随者 憎恶突变"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "狂热死亡 释放恶魔"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "邪恶魔典 秘密伪装"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "不洁护身符 污秽祝福"
+        }
+      ]
+    },
+    {
+      "id": "fellgor_ravagers",
+      "name": "恶角兽掠夺者",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 3,
+        "tactical_ploys": 4,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "暴躁脾气 埋伏"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "暴躁脾气 埋伏"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "叠加火力 冲动决心"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "方特工在转折点中被超过一名其他己方恶角兽"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "名拥有隐匿命令和掩护的己方恶角兽掠夺者 特工"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "混沌魔符 战争涂纹"
+        }
+      ]
+    },
+    {
+      "id": "gellerpox_infected",
+      "name": "盖勒痘魔",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "枪管扭曲 传染性通讯声噪"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "疫然决然 感染的祝福"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "被震动吸引 锈化放射"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "恶心科技 冲撞"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "腐烂之死 可怕猛攻"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "当一名己方盖勒痘魔 噩梦巨物特工执行近战行"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "枪管扭曲 传染性通讯声噪"
+        }
+      ]
+    },
+    {
+      "id": "goremongers",
+      "name": "洒血狂",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "特工 恐虐符文"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "强化残暴 耐力增强"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "血腥坚毅 狩猎鲜血"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "无边好斗 渴望血肉"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "毁灭性消散 撕裂血肉"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "毁灭性消散 撕裂血肉"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "血污图腾 血腥尸体"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "混沌印记 腕缚链条"
+        }
+      ]
+    },
+    {
+      "id": "wrecka_krew",
+      "name": "破坏专队",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 3,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "特工 狂暴破坏"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "毁灭 兴奋不止"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "己方破坏专队 特工的射击武器获得“集中”武"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "擦伤罢了 爆破工作"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "热爱废料 咔嘭！"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "钻头火箭 附加装甲"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "机油 符号"
+        }
+      ]
+    },
+    {
+      "id": "wyrmblade",
+      "name": "虫刃",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 3,
+        "tactical_ploys": 4,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "黎明在望 交叉火力"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "每当一名己方虫刃 特工对在这个转折点中已经"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "爆破炸药 教派利刃"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "一名己方虫刃 新信徒特工可以使用下列近战武"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "爆炸陷阱 探照灯"
+        }
+      ]
+    },
+    {
+      "id": "xv26_stealth_battlesuits",
+      "name": "XV26 隐形战斗服",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "光子榴弹发射器 1AP"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "锋行动剩下的任何距离立即执行一次无消耗的转"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "本的目标拥有掩护或者遮挡的情况下才能拥有对"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "XV26 多目标追踪器 网络反制干扰器"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "先进黑日目镜 内置目标锁定系统"
+        }
+      ]
+    },
+    {
+      "id": "hernkyn_yaegirs",
+      "name": "远行者猎手",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 2,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "无畏探险家"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "坚定决心指示物 等离子飞刀 飞斧指示物"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "当由您的对手确定（即由他们决定从自己特工底"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "娴熟刀法 坚毅求生家"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "各就各位 坚韧"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "各就各位 坚韧"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "羁绊稳固 绝不抛弃"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "羁绊稳固 绝不抛弃"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "严密防御 等离子尖刀"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "当一名敌方特工在一名己方远行者猎手 特工控"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "武器规则"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 3,
+          "name": "精准爆矢弹药 烈焰爆矢弹药"
+        }
+      ]
+    },
+    {
+      "id": "kommandos",
+      "name": "特种兵",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "嘘——！ 擦伤罢了"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "碾碎他们！ 狡诈而残暴"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "轻松摆脱 砍刀"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "炸药 鱼叉"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "武器规则 武器规则"
+        }
+      ]
+    },
+    {
+      "id": "legionaries",
+      "name": "军团",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "混沌印记 混沌印记"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "己方军团 特工将根据上述的关键词获得额外的"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "血祭血神 坚不可摧"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "迅捷速度 无常命运"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "无尽杀戮 变异与扭转"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "邪恶光环 不祥迷惑"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "守护护甲 腐化弹药"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "混沌护身符 凶恶利刃"
+        }
+      ]
+    },
+    {
+      "id": "novitiates",
+      "name": "见习修女",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "热诚复仇 信仰守护者"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "祝福治疗 正义前行"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "信仰圣徽 圣化弹药"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "当一名己方见习修女 特工使用自动枪、自动手"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "自动儆戒器 神圣药膏"
+        }
+      ]
+    },
+    {
+      "id": "phobos_strike_team",
+      "name": "恐惧突袭小队",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 1,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "全方位扰频器 恐惧"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "战略计划（如果一名己方渗透者特工位于杀戮区"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "very_long_effect",
+          "index": 0,
+          "name": "选择一个位于该特工控制范围的己方恐惧突袭小",
+          "length": 1322
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "very_long_effect",
+          "index": 0,
+          "name": "选择一个位于该特工控制范围的己方恐惧突袭小",
+          "length": 2574
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "恐惧突袭小队 • 入侵者战士"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "全方位扰频器 恐惧"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "隐匿突袭 纯洁印章"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "中该特工不能执行过任意其他行动（但是在结算"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "额外功能型手雷 格斗刀"
+        }
+      ]
+    },
+    {
+      "id": "raveners",
+      "name": "蛇虫",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 4,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "特工 钻地"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "中毒指示物 地下伏击指示物"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "隧道潜伏 蛇身闪避"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "地下恐惧 钻地攻击"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "在一名己方蛇虫 特工执行钻地行动时使用本交"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "死亡狂暴 变色孢子迷彩"
+        }
+      ]
+    },
+    {
+      "id": "sanctifiers",
+      "name": "净化者",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 3,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "烈焰 国教布道"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "帝皇佑护 虔诚击打"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "当受到布道增益的一名己方净化者 特工处于近"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "狂热控诉 召集信徒"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "玫瑰念珠 狂热根除"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "烈火救赎 献身！绝不动摇"
+        }
+      ]
+    },
+    {
+      "id": "vespid_stingwings",
+      "name": "胡蜂尖翼",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "very_long_effect",
+          "index": 1,
+          "name": "天火突袭 2AP",
+          "length": 1189
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "复眼 窜动飞行"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "在一名己方胡蜂尖翼 特工执行转移行动时使用"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "中子过载 致命毒液"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "神经刺激素 交融刺激素"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "加速刺激素 进攻刺激素"
+        }
+      ]
+    },
+    {
+      "id": "void_dancer_troupe",
+      "name": "虚空舞者剧团",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "己方虚空舞者剧团 特工会在战斗中成为关键角"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "选择一名己方虚空舞者剧团 特工获得您战斗中"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "选择一名己方虚空舞者剧团 特工获得您战斗中"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "盛装丑角 疾速突袭"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "每当一名己方虚空舞者剧团 特工向上进行攀爬"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 3,
+          "name": "特工的控制范围内（但依然需要在那次移动的开"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "多米诺力场 灵骨护符"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "多米诺力场 灵骨护符"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "尖啸者毒素弹 死亡面具"
+        }
+      ]
+    },
+    {
+      "id": "angels_of_death",
+      "name": "死亡天使",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "战团战术 战团战术"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "very_long_effect",
+          "index": 1,
+          "name": "使用限制（如果您还为其他特工选择了手雷类的",
+          "length": 1335
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "very_long_effect",
+          "index": 1,
+          "name": "使用限制（如果您还为其他特工选择了手雷类的",
+          "length": 1335
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "复仇之怒 纯洁印章"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "在一名己方死亡天使 特工进行反应时使用本交"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "战团圣物 偏移肩盾"
+        }
+      ]
+    },
+    {
+      "id": "battleclade",
+      "name": "战斗支队",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 3,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "在每一名己方战斗支队 奴工特工被激活时执行"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "全知扫描仪指示物 机械缝合阵列指示物"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "方战斗支队 自动侦测或己方战斗支队 奴工管"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "优先获取 系统驱邪"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "远程访问 自动钢化祈祷"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "电磁电容器 隐藏装置"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 3,
+          "name": "己方战斗支队 特工的近战武器拥有“震荡”武"
+        }
+      ]
+    },
+    {
+      "id": "canoptek_circle",
+      "name": "冥工之环",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "超维护盾 动力转换增幅"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "冥工重力推斥 吸魂"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "护盾闪耀 灵动方尖碑节点"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "当一枚攻击骰子对一名己方冥工之环 特工造成"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "节点响应 可消耗奴仆"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "名己方冥工之环 冥工特工替代成为有效目标（"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "矩阵操纵器 觉醒的方尖碑节点"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "纳米甲虫闸 移相器"
+        }
+      ]
+    },
+    {
+      "id": "corsair_voidscarred",
+      "name": "虚空创痕海盗",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 1,
+        "strategic_ploys": 2,
+        "tactical_ploys": 4,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "步枪 艾达灵族掠袭者"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "步枪 艾达灵族掠袭者"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "掠夺者"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "逐利海盗 机动交战"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "逐利海盗 机动交战"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "名称 攻击 命中伤害 武器规则"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "次元折跃 1AP 守护之盾 1AP"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "步枪 艾达灵族掠袭者"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "步枪 艾达灵族掠袭者"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 3,
+          "name": "掠夺者"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "高傲冒险家 日耀斗篷"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "高傲冒险家 日耀斗篷"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "迷雾场 指引符文"
+        }
+      ]
+    },
+    {
+      "id": "death_korps",
+      "name": "死亡军团",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "选择一个位于该特工控制范围的己方死亡兵团 特"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "之前激活另一名就绪的己方死亡军团 士兵特工"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "选择一个位于该特工控制范围的己方死亡兵团 特"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "之前激活另一名就绪的己方死亡军团 士兵特工"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "领袖鼓舞 联合作战"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "生即为耻辱 死即为偿罪"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "手斧 化学轰炸"
+        }
+      ]
+    },
+    {
+      "id": "deathwatch",
+      "name": "死亡守望",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 2,
+          "name": "圣图斯-V 型生物监测手环"
+        }
+      ]
+    },
+    {
+      "id": "elucidian_starstriders",
+      "name": "艾露西亚星行者",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 4,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 0,
+          "name": "特工 行商的许可证能使他们在帝国中获得难以想"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "致命距离 权益声明"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "致命距离 权益声明"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "无畏探险家 迅捷行军"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "无畏探险家 迅捷行军"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "联合攻击 求生专家"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "当一名己方艾露西亚星行者 特工激活时使用本"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "当一名己方艾露西亚星行者 特工激活时使用本"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "饱经考验 训练有素"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "当一名己方艾露西亚星行者 海军特工激活时使"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 3,
+          "name": "当一名己方艾露西亚星行者 海军特工激活时使"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "每当一名己方艾露西亚星行者 特工使用私掠者"
+        }
+      ]
+    },
+    {
+      "id": "farstalker_kinband",
+      "name": "远行者族团",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 4,
+        "equipment": 4
+      },
+      "issues": [
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "快枪手 猎杀信号 胜利咆哮"
+        }
+      ]
+    },
+    {
+      "id": "hand_of_the_archon",
+      "name": "执政官之手",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 2,
+        "equipment": 3
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "刀艺师 无情施虐者"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "刀艺师 无情施虐者"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "死亡从暗中袭来 夜之住民"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "死亡从暗中袭来 夜之住民"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "残酷诡计 邪恶计划"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 0,
+          "name": "残酷诡计 邪恶计划"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "可憎傲慢 掠食伤者"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_effect_tail",
+          "index": 1,
+          "name": "可憎傲慢 掠食伤者"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "链式陷阱 凶险利刃"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "己方执政官之手 特工成套刀具武器的攻击属性"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_effect_tail",
+          "index": 2,
+          "name": "不能在那次激活或反应期间执行那个行动（不消"
+        }
+      ]
+    },
+    {
+      "id": "hunter_clade",
+      "name": "猎手支队",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 3,
+        "tactical_ploys": 4,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "致衰辐射 神经干扰"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "侦察协议 加速药物"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "它数据卡上的远程武器获得“致命 5+”武器规"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "very_long_effect",
+          "index": 1,
+          "name": "它数据卡上的远程武器获得“致命 5+”武器规",
+          "length": 1051
+        }
+      ]
+    },
+    {
+      "id": "kasrkin",
+      "name": "卡舍津",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 4,
+        "tactical_ploys": 2,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "faction_rules",
+          "type": "merged_name",
+          "index": 1,
+          "name": "迅速出击 沉着冷静"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "原型: 安全保护、搜索与破坏"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "迅速出击 沉着冷静"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "转移位置 把握先机"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "掩护撤退 消灭目标"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "寸土不让 前握把"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "长距离瞄具 卡迪亚圣物"
+        }
+      ]
+    },
+    {
+      "id": "mandrakes",
+      "name": "曼德拉",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 1,
+        "tactical_ploys": 2,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "恐惧蔓延 阴暗尸布"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "淡出视线 灵魂盛宴"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "无处可藏 暗影咬啮"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "链缚陷阱 暗影铭文"
+        }
+      ]
+    },
+    {
+      "id": "ratlings",
+      "name": "莱特林",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 1,
+        "tactical_ploys": 4,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "闪转腾挪 前线突袭"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "生存本能 精妙狙击"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "在一名己方莱特林 特工使用步枪进行射击行动"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "即使敌方特工控制范围有其他己方莱特林 特工"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 3,
+          "name": "偷窃成性 射击后隐蔽"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "赃物口粮 好运子弹"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "窃取资财 粗糙护甲"
+        }
+      ]
+    },
+    {
+      "id": "scout_squad",
+      "name": "侦查小队",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 1
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "1/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "游击交战 伏击"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "灵活训练 匿迹转移"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "阿斯塔特训练 狂野生理"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "勇猛新进者 隐蔽位置"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "格斗刀 重武器两脚架"
+        }
+      ]
+    },
+    {
+      "id": "warpcoven",
+      "name": "次元密会",
+      "status": "fail",
+      "counts": {
+        "faction_rules": 2,
+        "strategic_ploys": 2,
+        "tactical_ploys": 3,
+        "equipment": 2
+      },
+      "issues": [
+        {
+          "category": "strategic_ploys",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "count_mismatch",
+          "detail": "3/4"
+        },
+        {
+          "category": "equipment",
+          "type": "count_mismatch",
+          "detail": "2/4"
+        },
+        {
+          "category": "strategic_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "阿斯塔特 以太守护"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 0,
+          "name": "野蛮兽群 皆为尘土"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 1,
+          "name": "无常计划 灵能阴谋团"
+        },
+        {
+          "category": "tactical_ploys",
+          "type": "merged_name",
+          "index": 2,
+          "name": "在一名己方次元密会 巫师特工激活时使用本交"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 0,
+          "name": "变种兽群 附魔弹药"
+        },
+        {
+          "category": "equipment",
+          "type": "merged_name",
+          "index": 1,
+          "name": "另一名己方次元密会 奸角兽特工并同时激活它"
+        }
+      ]
+    }
+  ]
+}
